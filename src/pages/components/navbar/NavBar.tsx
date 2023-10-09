@@ -1,3 +1,5 @@
+import { RxAvatar } from "react-icons/rx";
+import { TfiWrite } from "react-icons/tfi";
 import ThemeToggle from "./ThemeToggle";
 
 function NavBar() {
@@ -21,8 +23,13 @@ function NavBar() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className="  p-2 rounded">Search</button>
-            <button className=" p-2 rounded">Write</button>
+            <button className=" flex items-center gap-2  p-2 rounded transition duration-300 transform hover:scale-110 cursor-pointer">
+              <TfiWrite />
+              Write
+            </button>
+            <button className="p-2 rounded w-12 h-12">
+              <RxAvatar className="w-8 h-8" />
+            </button>
           </div>
         </div>
       </div>
