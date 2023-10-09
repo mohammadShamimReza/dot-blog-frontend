@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RxAvatar } from "react-icons/rx";
 import { TfiWrite } from "react-icons/tfi";
 import ThemeToggle from "./ThemeToggle";
@@ -6,7 +7,9 @@ function NavBar() {
   return (
     <nav className="p-4 border border-t-0 border-l-0 border-r-0 border-b-gray-200 dark:border-b-gray-600">
       <div className="flex items-center justify-between">
-        <div className="p-2">MS-Blog</div>
+        <Link href="/">
+          <div className="p-2">MS-Blog</div>
+        </Link>
         <div>
           <div className="relative mt-2 ">
             <input
@@ -23,13 +26,18 @@ function NavBar() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className="text-gray-600 dark:text-white flex items-center gap-2  p-2 rounded transition duration-300 transform hover:scale-110 cursor-pointer">
-              <TfiWrite />
-              Write
-            </button>
-            <button className="p-2 rounded w-12 h-12">
-              <RxAvatar className="w-8 h-8" />
-            </button>
+            <Link href="/write">
+              <button className="text-gray-600 dark:text-white flex items-center gap-2  p-2 rounded transition duration-300 transform hover:scale-110 cursor-pointer">
+                <TfiWrite />
+                Write
+              </button>
+            </Link>
+
+            <Link href="/profile">
+              <button className="p-2 rounded w-12 h-12">
+                <RxAvatar className="w-8 h-8" />
+              </button>
+            </Link>
           </div>
         </div>
       </div>
