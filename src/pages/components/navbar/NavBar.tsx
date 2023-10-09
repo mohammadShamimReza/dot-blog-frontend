@@ -23,7 +23,7 @@ function NavBar() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className=" flex items-center gap-2  p-2 rounded transition duration-300 transform hover:scale-110 cursor-pointer">
+            <button className="text-gray-600 dark:text-white flex items-center gap-2  p-2 rounded transition duration-300 transform hover:scale-110 cursor-pointer">
               <TfiWrite />
               Write
             </button>
