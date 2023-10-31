@@ -1,94 +1,94 @@
-import { ReactElement, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ReactElement } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
+
 import Layout from "../components/Layouts/Layout";
+import Test from "./Test";
+
+interface FormInputs {
+  title: string;
+  topic: string;
+  content: string;
+}
+
+const schema = yup.object().shape({
+  title: yup.string().required("Title is required"),
+  topic: yup.string().required("Topic is required"),
+  content: yup.string().required("Content is required"),
+});
 
 function WriteForm() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [rows, setRows] = useState(4); // Initial number of rows
-  const [selectedTopic, setSelectedTopic] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    defaultValues: { content: "", title: "", topic: "" },
+  });
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    // onSubmit({ title, content });
-    // Clear form fields after submission
-    setTitle("");
-    setContent("");
-    setRows(4);
-    setSelectedTopic("");
-  };
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    console.log("Form values:", data);
 
-  const handleContentChange = (e: { target: { value: any } }) => {
-    const contentValue = e.target.value;
-    setContent(contentValue);
-
-    // Calculate the number of rows based on content length (adjust this logic as needed)
-    const contentLength = contentValue.split("\n").length;
-    setRows(Math.max(4, contentLength)); // Minimum 4 rows or more based on content
+    // You can perform further actions, such as sending data to a server, here.
   };
 
   return (
     <div>
       <form
-        onSubmit={handleSubmit}
-        className="rounded-lg overflow-hidden max-w-4xl mx-auto border border-gray-300 p-4"
+        onSubmit={handleSubmit(onSubmit)}
+        className="rounded-lg overflow-hidden max-w-4xl mx-auto border border-gray-400 p-4"
       >
         <h2 className="text-3xl font-semibold mb-4">Create a Blog Post</h2>
         <div className="mb-4">
-          <input
-            type="text"
-            id="title"
+          <Controller
             name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-3 border rounded-md focus:outline-none focus placeholder-gray-500"
-            placeholder="Title"
-            required
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                className="w-full p-3 rounded-md focus:outline-none bg-gray-300 text-black"
+                placeholder="Title"
+                required
+              />
+            )}
           />
+          <p>{errors.title?.message}</p>
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="topic"
-            className="block text-gray-700 font-semibold mb-2"
-          >
+          <label htmlFor="topic" className="block mb-2">
             Topic
           </label>
-          <select
-            id="topic"
+          <Controller
             name="topic"
-            value={selectedTopic}
-            onChange={(e) => setSelectedTopic(e.target.value)}
-            className="w-full p-3 border rounded-md focus:outline-none focus:border-gray-500"
-            required
-          >
-            <option value="" disabled>
-              Select a Topic
-            </option>
-            <option value="Cloud">Cloud</option>
-            <option value="Software">Software</option>
-            {/* Add more topic options as needed */}
-          </select>
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <select
+                {...field}
+                className="w-full p-3 rounded-md focus:outline-none"
+                required
+              >
+                <option value="" disabled>
+                  Select a Topic
+                </option>
+                <option value="Cloud">Cloud</option>
+                <option value="Software">Software</option>
+                {/* Add more topic options as needed */}
+              </select>
+            )}
+          />
+          <p>{errors.topic?.message}</p>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="content"
-            className="block text-gray-700 font-semibold mb-2"
-          >
-            Content
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            value={content}
-            onChange={handleContentChange} // Use the handleContentChange function
-            rows={rows} // Use the rows variable
-            className="w-full p-2 border rounded-md"
-            placeholder="Write your blog post content here"
-            required
-          ></textarea>
-        </div>
+        <Test />
+        {/* <ContantEditor control={control} errors={errors} /> */}
         <button
           type="submit"
-          className=" py-2 px-6 border border-gray-300 rounded-lg focus:outline-none focus:ring"
+          className="py-2 px-6 rounded-lg focus:outline-none focus:ring border"
         >
           Publish
         </button>
