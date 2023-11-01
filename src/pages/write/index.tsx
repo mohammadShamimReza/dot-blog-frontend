@@ -4,7 +4,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import Layout from "../components/Layouts/Layout";
-import ContantEditor from "./ContantEditor";
+import Tiptap from "./Tiptap";
 
 interface FormInputs {
   title: string;
@@ -84,7 +84,16 @@ function WriteForm() {
           />
           <p>{errors.topic?.message}</p>
         </div>
-        <ContantEditor control={control} errors={errors} />
+        <div className="mb-4">
+          <label className="block font-semibold mb-2">Content</label>
+          <Controller
+            name="content"
+            control={control}
+            defaultValue=""
+            render={({ field }) => <Tiptap onChange={field.onChange} />}
+          />
+          <p>{errors.content?.message}</p>
+        </div>
         <button
           type="submit"
           className="py-2 px-6 rounded-lg focus:outline-none focus:ring border"

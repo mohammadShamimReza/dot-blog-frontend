@@ -4,13 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import ToolBar from "./ToolBar";
 
-function Tiptap({
-  content,
-  onChange,
-}: {
-  content: string;
-  onChange: (richText: string) => void;
-}) {
+function Tiptap({ onChange }: { onChange: (richText: string) => void }) {
   const editor = useEditor({
     extensions: [
       TextStyle.configure({ HTMLAttributes: [ListItem.name] }),
