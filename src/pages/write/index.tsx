@@ -51,7 +51,7 @@ function WriteForm() {
               <input
                 {...field}
                 type="text"
-                className="w-full p-3 rounded-md focus:outline-none bg-gray-300 text-black"
+                className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600 text-black"
                 placeholder="Title"
                 required
               />
@@ -70,7 +70,7 @@ function WriteForm() {
             render={({ field }) => (
               <select
                 {...field}
-                className="w-full p-3 rounded-md focus:outline-none"
+                className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600"
                 required
               >
                 <option value="" disabled>

@@ -9,8 +9,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
-        className={` px-2 py-1 rounded-full text-white ${
-          editor.isActive("bold") ? "font-bold bg-gray-500" : ""
+        className={` px-2 py-1 rounded-full  ${
+          editor.isActive("bold")
+            ? "font-bold dark:bg-gray-500 bg-gray-200"
+            : "hover:bg-gray-100"
         }`}
       >
         B
@@ -18,8 +20,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={` px-2 py-1 rounded-full text-white ${
-          editor.isActive("italic") ? "italic bg-gray-500" : ""
+        className={` px-2 py-1 rounded-full  ${
+          editor.isActive("italic")
+            ? "italic dark:bg-gray-500 bg-gray-200"
+            : "hover:bg-gray-100"
         }`}
       >
         I
@@ -27,8 +31,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={` px-2 py-1 rounded-full text-white ${
-          editor.isActive("strike") ? "line-through bg-gray-500" : ""
+        className={` px-2 py-1 rounded-full  ${
+          editor.isActive("strike")
+            ? "line-through dark:bg-gray-500 bg-gray-200"
+            : "hover:bg-gray-100"
         }`}
       >
         S
@@ -36,8 +42,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
 
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={` px-2 py-1 rounded-full text-white ${
-          editor.isActive("heading", { level: 2 }) ? "bg-gray-500" : ""
+        className={` px-2 py-1 rounded-full  ${
+          editor.isActive("heading", { level: 2 })
+            ? "dark:bg-gray-500 bg-gray-200 hover:bg-gray-100"
+            : "hover:bg-gray-100"
         }`}
       >
         {" "}
