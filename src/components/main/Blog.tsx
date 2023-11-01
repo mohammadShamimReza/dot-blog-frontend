@@ -1,24 +1,27 @@
+import Image from "next/image";
+import Link from "next/link";
 import { AiFillLike } from "react-icons/ai";
 
 function Blog() {
-    return (
-      <div className="">
-        {" "}
-        <div className="h-72 mb-3">
-          <div
-            className="bg-white p-4 rounded-lg shadow-xl border border-t dark:border-none  mb-4 transition duration-100 transform hover:shadow-2xl cursor-pointer 
+  return (
+    <div className="">
+      {" "}
+      <div className="h-72 mb-3">
+        <div
+          className="bg-white p-4 rounded-lg shadow-xl border border-t dark:border-none  mb-4 transition duration-100 transform hover:shadow-2xl 
           isDarkMode dark:bg-gray-800 h-72 flex flex-col justify-between"
-          >
-            <div className="">
+        >
+          <div className="">
+            <Link href={"/blog/1233"}>
               <h2
                 className="text-gray-800 mb-4 
-            dark:text-gray-300"
+            dark:text-gray-300 text-xl font-semibold"
               >
                 asdfasdfasdf
               </h2>
               <p
-                className="text-xl font-semibold mb-2
-            isDarkMode dark:text-gray-300 truncate-ellipsis line-clamp-3"
+                className=" mb-2
+            isDarkMode dark:text-gray-300 truncate-ellipsis line-clamp-5"
               >
                 The US Bureau of Labour Statistics projects a 13% growth in job
                 opportunities in the web development industry between 2020 and
@@ -104,27 +107,34 @@ function Blog() {
                 creating applications that need a persistent connection between
                 the browser and the server.
               </p>
-            </div>
-
-            <div className="flex items-center justify-between text-gray-600">
+            </Link>
+          </div>
+          <div className="flex items-center justify-between text-gray-600">
+            <Link href={"/profile/asdf"}>
               <div className="flex items-center">
-                <img alt="Writer" className="w-8 h-8 rounded-full mr-2" />
+                <Image
+                  src={""}
+                  height={2}
+                  width={2}
+                  alt="Writer"
+                  className="flex w-8 h-8 rounded-full mr-2"
+                />
 
                 <span>Morsed Hasan</span>
               </div>
-
-              <button
-                className="flex items-center 
+            </Link>
+            <button
+              className="flex items-center 
               isDarkMode  dark:text-gray-300"
-              >
-                <AiFillLike />
-                500
-              </button>
-            </div>
+            >
+              <AiFillLike />
+              500
+            </button>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default Blog;

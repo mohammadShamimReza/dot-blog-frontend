@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import Layout from "../components/Layouts/Layout";
+import Layout from "../../components/Layouts/Layout";
 import Tiptap from "./Tiptap";
 
 interface FormInputs {

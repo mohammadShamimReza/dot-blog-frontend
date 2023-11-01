@@ -6,7 +6,6 @@ import NavBar from "../navbar/NavBar";
 
 function Layout({ children }: { children: ReactElement }) {
   const { theme } = useTheme();
-  console.log(theme);
 
   return (
     <ThemeProvider attribute="class">
