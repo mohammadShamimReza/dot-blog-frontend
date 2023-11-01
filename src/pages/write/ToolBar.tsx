@@ -9,8 +9,8 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
-        className={`bg-gray-300 px-2 py-1 rounded-full text-white ${
-          editor.isActive("bold") ? "font-bold" : ""
+        className={` px-2 py-1 rounded-full text-white ${
+          editor.isActive("bold") ? "font-bold bg-gray-500" : ""
         }`}
       >
         B
@@ -18,8 +18,8 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={`bg-gray-300 px-2 py-1 rounded-full text-white ${
-          editor.isActive("italic") ? "italic" : ""
+        className={` px-2 py-1 rounded-full text-white ${
+          editor.isActive("italic") ? "italic bg-gray-500" : ""
         }`}
       >
         I
@@ -27,38 +27,39 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={`bg-gray-300 px-2 py-1 rounded-full text-white ${
-          editor.isActive("strike") ? "line-through" : ""
+        className={` px-2 py-1 rounded-full text-white ${
+          editor.isActive("strike") ? "line-through bg-gray-500" : ""
         }`}
       >
         S
       </button>
 
       <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={`bg-gray-300 px-2 py-1 rounded-full text-white ${
-          editor.isActive("heading", { level: 1 }) ? "bg-blue-500" : ""
-        }`}
-      >
-        H1
-      </button>
-      <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={`bg-gray-300 px-2 py-1 rounded-full text-white ${
-          editor.isActive("heading", { level: 2 }) ? "bg-blue-500" : ""
+        className={` px-2 py-1 rounded-full text-white ${
+          editor.isActive("heading", { level: 2 }) ? "bg-gray-500" : ""
         }`}
       >
-        H2
+        {" "}
+        <span className="text-xl">H2</span>
+      </button>
+      {/* <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+        className={` px-2 py-1 rounded-full text-white ${
+          editor.isActive("heading", { level: 4 }) ? "bg-gray-500" : ""
+        }`}
+      >
+        <span className="text-lg">H4</span>
       </button>
 
       <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={`bg-gray-300 px-2 py-1 rounded-full text-white ${
-          editor.isActive("heading", { level: 4 }) ? "bg-blue-500" : ""
+        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
+        className={` px-2 py-1 rounded-full text-white ${
+          editor.isActive("heading", { level: 6 }) ? "bg-gray-500" : ""
         }`}
       >
-        H4
-      </button>
+        <span className="text-sm">H6</span>
+      </button> */}
     </div>
   );
 }

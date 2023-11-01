@@ -4,7 +4,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import Layout from "../components/Layouts/Layout";
-import Test from "./Test";
+import ContantEditor from "./ContantEditor";
 
 interface FormInputs {
   title: string;
@@ -84,8 +84,7 @@ function WriteForm() {
           />
           <p>{errors.topic?.message}</p>
         </div>
-        <Test />
-        {/* <ContantEditor control={control} errors={errors} /> */}
+        <ContantEditor control={control} errors={errors} />
         <button
           type="submit"
           className="py-2 px-6 rounded-lg focus:outline-none focus:ring border"
