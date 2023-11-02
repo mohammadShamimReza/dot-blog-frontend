@@ -48,6 +48,9 @@ function WriteForm() {
       setSelectedImage(null);
     }
   };
+  const handleRemoveImage = () => {
+    setSelectedImage(null); // Remove the selected image from the state
+  };
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     if (selectedImage) {
@@ -132,6 +135,13 @@ function WriteForm() {
             className="border border-gray-300 p-2 rounded w-full"
             onChange={handleImageChange}
           />
+          <button
+            type="button"
+            onClick={handleRemoveImage}
+            className="ml-2 text-red-600 hover:underline"
+          >
+            Remove Image
+          </button>
           {errors.image && (
             <p className="text-red-600">{errors.image.message}</p>
           )}
