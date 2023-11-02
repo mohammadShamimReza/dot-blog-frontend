@@ -23,7 +23,7 @@ function Tiptap({ onChange }: { onChange: (richText: string) => void }) {
 
     editorProps: {
       attributes: {
-        class: "w-full p-2 border rounded-md editor-height",
+        class: "w-full p-2 border rounded-lg editor-height ",
       },
     },
     injectCSS: true,

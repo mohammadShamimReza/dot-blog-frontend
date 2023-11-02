@@ -5,14 +5,14 @@ function ToolBar({ editor }: { editor: Editor | null }) {
     return null;
   }
   return (
-    <div className="flex space-x-2 border rounded-sm">
+    <div className="flex space-x-2 border rounded-lg mb-3">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
-        className={` px-2 py-1 rounded-full  ${
+        className={` px-2 py-1   ${
           editor.isActive("bold")
             ? "font-bold dark:bg-gray-500 bg-gray-200"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 dark:hover:bg-gray-500"
         }`}
       >
         B
@@ -20,10 +20,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={` px-2 py-1 rounded-full  ${
+        className={` px-2 py-1   ${
           editor.isActive("italic")
             ? "italic dark:bg-gray-500 bg-gray-200"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 dark:hover:bg-gray-500"
         }`}
       >
         I
@@ -31,10 +31,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={` px-2 py-1 rounded-full  ${
+        className={` px-2 py-1   ${
           editor.isActive("strike")
             ? "line-through dark:bg-gray-500 bg-gray-200"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 dark:hover:bg-gray-500"
         }`}
       >
         S
@@ -42,10 +42,10 @@ function ToolBar({ editor }: { editor: Editor | null }) {
 
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={` px-2 py-1 rounded-full  ${
+        className={` px-2 py-1   ${
           editor.isActive("heading", { level: 2 })
             ? "dark:bg-gray-500 bg-gray-200 hover:bg-gray-100"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 dark:hover:bg-gray-500"
         }`}
       >
         {" "}

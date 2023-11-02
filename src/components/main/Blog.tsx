@@ -12,7 +12,7 @@ function Blog() {
           isDarkMode dark:bg-gray-800 h-72 flex flex-col justify-between"
         >
           <div className="">
-            <Link href={"/blog/1233"}>
+            <Link href={"/blogs/1233"}>
               <h2
                 className="text-gray-800 mb-4 
             dark:text-gray-300 text-xl font-semibold"
