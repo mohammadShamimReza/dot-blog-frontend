@@ -1,8 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
+import Image from "next/image";
 import Layout from "../../components/Layouts/Layout";
 import Tiptap from "./Tiptap";
 
@@ -10,12 +11,19 @@ interface FormInputs {
   title: string;
   topic: string;
   content: string;
+  image: File | null;
 }
 
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   topic: yup.string().required("Topic is required"),
   content: yup.string().required("Content is required"),
+  image: yup.mixed().test("file", "File is required", function (file) {
+    if (this.parent.image) {
+      return file !== null;
+    }
+    return true;
+  }),
 });
 
 function WriteForm() {
@@ -24,12 +32,27 @@ function WriteForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
     mode: "onChange",
-    defaultValues: { content: "", title: "", topic: "" },
   });
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  console.log(selectedImage, "this is imege");
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setSelectedImage(files[0]);
+    } else {
+      setSelectedImage(null);
+    }
+  };
+
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    if (selectedImage) {
+      data.image = selectedImage;
+    }
     console.log("Form values:", data);
 
     // You can perform further actions, such as sending data to a server, here.
@@ -51,7 +74,7 @@ function WriteForm() {
               <input
                 {...field}
                 type="text"
-                className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600 text-black"
+                className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600 "
                 placeholder="Title"
                 required
               />
@@ -84,6 +107,42 @@ function WriteForm() {
           />
           <p>{errors.topic?.message}</p>
         </div>
+        {selectedImage !== null && (
+          <div className="rounded-lg border">
+            <div className="p-4">
+              <Image
+                src={URL.createObjectURL(selectedImage)}
+                alt="thumbnail image"
+                height={859.2}
+                width={144}
+                // height={100}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="mb-4">
+          <label htmlFor="image" className="py-3 block  font-bold">
+            Thumbnail Image
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            className="border border-gray-300 p-2 rounded w-full"
+            onChange={handleImageChange}
+          />
+          {errors.image && (
+            <p className="text-red-600">{errors.image.message}</p>
+          )}
+        </div>
+
+        {/* <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
+          Upload
+        </button> */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Content</label>
           <Controller
