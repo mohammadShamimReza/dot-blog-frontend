@@ -9,7 +9,7 @@ function Blog() {
       <div className="h-72 mb-3">
         <div
           className="bg-white p-4 rounded-lg shadow-xl border border-t dark:border-none  mb-4 transition duration-100 transform hover:shadow-2xl 
-          isDarkMode dark:bg-gray-800 h-72 flex flex-col justify-between"
+          isDarkMode dark:bg-gray-800 hover:dark:shadow-slate-600 h-72 flex flex-col justify-between"
         >
           <div className="">
             <Link href={"/blogs/1233"}>

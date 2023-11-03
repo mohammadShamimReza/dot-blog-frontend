@@ -1,6 +1,6 @@
 function MyBlogs() {
   return (
-    <div>
+    <div className="m-3">
       <div className="max-w-sm  overflow-hidden border rounded-lg">
         <img
           className="w-full"
@@ -11,8 +11,7 @@ function MyBlogs() {
           <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
           <p className=" text-base">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Voluptatibus quia, nulla! Maiores et perferendis eaque,
-            exercitationem praesentium nihil.
+            Voluptatibus quia, nulla!
           </p>
         </div>
         <div className="flex items-center px-6 pt-4 pb-2">

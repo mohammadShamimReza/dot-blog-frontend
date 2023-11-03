@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ReactElement, useState } from "react";
+import { ReactElement, RefObject, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -27,6 +27,7 @@ const schema = yup.object().shape({
 });
 
 function WriteForm() {
+  const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const {
     control,
     handleSubmit,
@@ -43,6 +44,7 @@ function WriteForm() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
+      console.log(files, files[0]);
       setSelectedImage(files[0]);
     } else {
       setSelectedImage(null);
@@ -50,6 +52,9 @@ function WriteForm() {
   };
   const handleRemoveImage = () => {
     setSelectedImage(null); // Remove the selected image from the state
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset the file input value
+    }
   };
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
@@ -132,16 +137,20 @@ function WriteForm() {
             type="file"
             id="image"
             name="image"
-            className="border border-gray-300 p-2 rounded w-full"
+            ref={fileInputRef}
+            className="border border-gray-300 p-2 rounded-lg "
             onChange={handleImageChange}
           />
-          <button
-            type="button"
-            onClick={handleRemoveImage}
-            className="ml-2 text-red-600 hover:underline"
-          >
-            Remove Image
-          </button>
+          {selectedImage !== null && (
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+            >
+              Remove Image
+            </button>
+          )}
+
           {errors.image && (
             <p className="text-red-600">{errors.image.message}</p>
           )}
@@ -165,7 +174,7 @@ function WriteForm() {
         </div>
         <button
           type="submit"
-          className="py-2 px-6 rounded-lg focus:outline-none focus:ring border"
+          className="py-2 px-6 rounded-lg focus:outline-none focus:ring border hover:rounded-3xl hover:border"
         >
           Publish
         </button>

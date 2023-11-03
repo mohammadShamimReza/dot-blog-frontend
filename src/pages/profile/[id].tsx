@@ -1,61 +1,213 @@
-import { ReactElement } from "react";
-import { AiFillGithub, AiFillLinkedin, AiOutlineEdit } from "react-icons/ai";
+import React, { ChangeEvent, ReactElement, useState } from "react";
+import {
+  AiFillGithub,
+  AiFillLinkedin,
+  AiOutlineEdit,
+  AiOutlineSave,
+} from "react-icons/ai";
 import Layout from "../../components/Layouts/Layout";
 import MyBlogs from "./MyBlogs";
 
-function ProfileData() {
+interface EditableFieldProps {
+  isEditing: boolean;
+  value: string;
+  onSave?: () => void;
+  onEdit?: () => void;
+  onChange: (e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => void;
+  isTextArea?: boolean;
+  icon?: React.ReactNode;
+  link?: string;
+}
+
+const EditableField: React.FC<EditableFieldProps> = ({
+  isEditing,
+  value,
+  onSave,
+  onEdit,
+  onChange,
+  isTextArea, // New prop to indicate textarea
+  icon,
+  link,
+}) => {
   return (
-    <div
-      className="rounded-lg overflow-hidden  max-w-2xl mx-auto
-      dark:bg-gray-800 bg-white"
-    >
+    <div className="flex gap-2 items-center w-full">
+      {isEditing ? (
+        <>
+          {isTextArea ? ( // Conditionally render a textarea
+            <textarea
+              value={value}
+              className=" border-2 rounded-lg w-full"
+              onChange={onChange}
+            />
+          ) : (
+            <>
+              {" "}
+              <input
+                type="text"
+                value={value}
+                className="border-2 rounded-lg w-full"
+                onChange={onChange}
+              />
+              <AiOutlineSave onClick={onSave} className="w-6 h-6" />
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          {icon}
+          <a href={link} target="_blank" rel="noopener noreferrer">
+            {value}
+          </a>
+          {isTextArea ? (
+            ""
+          ) : (
+            <AiOutlineEdit
+              onClick={onEdit}
+              className="w-6 h-6 hover:cursor-pointer"
+            />
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+const ProfileData = () => {
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingJob, setIsEditingJob] = useState(false);
+  const [isEditingExperience, setIsEditingExperience] = useState(false);
+  const [isEditingLinkedIn, setIsEditingLinkedIn] = useState(false);
+  const [isEditingGitHub, setIsEditingGitHub] = useState(false);
+
+  const [name, setName] = useState("Morsed Hasan");
+  const [job, setJob] = useState("Software Engineer");
+  const [experience, setExperience] = useState(
+    "Software Engineer with 5+ years of experience in web development and software design. Proficient in JavaScript, React, Node.js, and more."
+  );
+  const [linkedin, setLinkedIn] = useState(
+    "https://www.linkedin.com/in/johndoe"
+  );
+  const [github, setGitHub] = useState("https://github.com/johndoe");
+
+  const handleSaveName = () => {
+    setIsEditingName(false);
+  };
+
+  const handleSaveJob = () => {
+    setIsEditingJob(false);
+  };
+
+  const handleSaveExperience = () => {
+    setIsEditingExperience(false);
+  };
+
+  const handleSaveLinkedIn = () => {
+    setIsEditingLinkedIn(false);
+  };
+
+  const handleSaveGitHub = () => {
+    setIsEditingGitHub(false);
+  };
+
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    // Removed HTMLTextAreaElement since it's not used
+    setName(e.target.value);
+  };
+
+  const handleChangeJob = (e: ChangeEvent<HTMLInputElement>) => {
+    setJob(e.target.value);
+  };
+
+  const handleChangeExperience = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setExperience(e.target.value);
+  };
+
+  const handleChangeLinkedIn = (e: ChangeEvent<HTMLInputElement>) => {
+    setLinkedIn(e.target.value);
+  };
+
+  const handleChangeGitHub = (e: ChangeEvent<HTMLInputElement>) => {
+    setGitHub(e.target.value);
+  };
+
+  return (
+    <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
       <img
         src="https://via.placeholder.com/150"
         alt="Profile"
         className="w-full h-96 object-cover"
       />
-      <div className="p-4 dark:text-white text-gray-800">
-        <p className=" mb-2 text-2xl font-semibold flex gap-2 align-middle">
-          Morsed Hasan <AiOutlineEdit className="mt-1 border-2   rounded-lg" />
-        </p>
+      <div className="p-4 ">
+        <div className="mb-2 text-2xl font-semibold flex gap-2 items-center">
+          {" "}
+          {/* Fixed "align-middle" to "items-center" */}
+          <EditableField
+            isEditing={isEditingName}
+            value={name}
+            onSave={handleSaveName}
+            onEdit={() => setIsEditingName(true)}
+            onChange={handleChangeName}
+          />
+        </div>
 
-        <p className=" mb-2 flex gap-2">
-          Software Engineer{" "}
-          <AiOutlineEdit className="mt-1 border-2 rounded-md" />
-        </p>
-        <p className=" mb-4">1234 Elm Street, City, Country</p>
-        <div className="mt-4 ">
-          <p className="text-lg font-semibold mb-2 flex gap-2">
-            Experience <AiOutlineEdit className="mt-1 border-2   rounded-lg" />
+        <div className="mb-2 flex gap-2">
+          <EditableField
+            isEditing={isEditingJob}
+            value={job}
+            onSave={handleSaveJob}
+            onEdit={() => setIsEditingJob(true)}
+            onChange={handleChangeJob}
+          />
+        </div>
+        <div className="mt-4">
+          <p className="text-lg font-semibold  gap-2 flex">
+            {" "}
+            Experience
+            {!isEditingExperience ? (
+              <AiOutlineEdit
+                onClick={() => setIsEditingExperience(true)}
+                className="w-6 h-6 hover:cursor-pointer"
+              />
+            ) : (
+              <AiOutlineSave
+                onClick={handleSaveExperience}
+                className="w-6 h-6"
+              />
+            )}
           </p>
-          <div className="flex gap-2 align-middle"></div>
-          <p className="">
-            Software Engineer with 5+ years of experience in web development and
-            software design. Proficient in JavaScript, React, Node.js, and more.
-          </p>
+          <div className=" mb-2 flex gap-2">
+            <EditableField
+              isEditing={isEditingExperience}
+              value={experience}
+              // onSave={handleSaveExperience}
+              // onEdit={() => setIsEditingExperience(true)}
+              onChange={handleChangeExperience}
+              isTextArea={true}
+            />
+          </div>
         </div>
         <br />
-        <div className="flex space-x-4 items-end ">
-          <a
-            href="https://www.linkedin.com/in/johndoe"
-            className="hover:underline text-blue-500"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className="">
-              <AiFillLinkedin className="w-8 h-8 text-blue-600" />
-            </div>
-          </a>
-          <a
-            href="https://github.com/johndoe"
-            className="hover:underline   text-gray-80"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className="">
-              <AiFillGithub className="w-7 h-7 bg-white dark:bg-black" />
-            </div>
-          </a>
+        <div className="mt-4">
+          <EditableField
+            isEditing={isEditingLinkedIn}
+            value={linkedin}
+            onSave={handleSaveLinkedIn}
+            onEdit={() => setIsEditingLinkedIn(true)}
+            onChange={handleChangeLinkedIn}
+            icon={<AiFillLinkedin className="w-6 h-6 text-blue-500" />}
+            link={linkedin}
+          />
+          <EditableField
+            isEditing={isEditingGitHub}
+            value={github}
+            onSave={handleSaveGitHub}
+            onEdit={() => setIsEditingGitHub(true)}
+            onChange={handleChangeGitHub}
+            icon={
+              <AiFillGithub className="w-6 h-6 text-gray-800" /> /* Fixed the icon color */
+            }
+            link={github}
+          />
         </div>
       </div>
       <p className="text-center font-semibold text-lg">Blogs</p>
@@ -64,7 +216,7 @@ function ProfileData() {
       </div>
     </div>
   );
-}
+};
 
 export default ProfileData;
 
