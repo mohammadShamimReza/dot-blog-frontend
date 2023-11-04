@@ -1,3 +1,4 @@
+import Providers from "@/lib/Providers";
 import "@/styles/globals.css";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
@@ -13,5 +14,9 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <Providers>
+      <Component {...pageProps} />
+    </Providers>
+  );
 }

@@ -1,3 +1,6 @@
+import { useUser } from "@/lib/UserProvider";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { getUserInfo, storeUserInfo } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,6 +24,8 @@ interface ErrorType {
 }
 
 const LoginForm: React.FC = () => {
+  const { user, setUser } = useUser();
+  const [userLogin] = useUserLoginMutation();
   const router = useRouter();
 
   const validationSchema = yup.object().shape({
@@ -34,9 +39,41 @@ const LoginForm: React.FC = () => {
 
   const handleLogin = async (data: any) => {
     try {
+      const res = await userLogin({ ...data }).unwrap();
+      // message.loading("Logging!");
+
+      console.log(res.accessToken);
+
+      if (res?.accessToken) {
+        console.log("role");
+
+        storeUserInfo({ accessToken: res?.accessToken });
+        const { role, id } = getUserInfo() as any;
+        reset({ email: "", password: "" });
+        console.log(role);
+        router.push("/profile");
+
+        setUser({ role: role, id: res.id });
+
+        // message.success("User log in successfully!");
+      } else {
+        // message.error("User log was not successful! Please try again.");
+      }
+
+      if (res === undefined) {
+        // message.error("User not found. Please check your credentials.");
+      }
     } catch (error) {
       console.error(error);
       const specificError = error as ErrorType;
+
+      if (specificError.message === "user not found") {
+        // message.error("User not found. Please check your credentials.");
+      } else {
+        // message.error(
+        //   "An error occurred while logging in. Please try again later."
+        // );
+      }
     }
   };
 

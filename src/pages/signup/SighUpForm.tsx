@@ -1,5 +1,11 @@
 "use client";
 
+import { useUser } from "@/lib/UserProvider";
+import {
+  useCreateUserMutation,
+  useUserLoginMutation,
+} from "@/redux/api/authApi";
+import { getUserInfo } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +18,10 @@ interface SignupFormProps {
 }
 
 const SignupForm: React.FC = () => {
+  const [createUser, { data, error, status }] = useCreateUserMutation();
+  const [userLogin] = useUserLoginMutation();
   const router = useRouter();
+  const { user, setUser } = useUser();
 
   const validationSchema = yup.object().shape({
     firstName: yup.string().required("First Name is required"),
@@ -44,18 +53,41 @@ const SignupForm: React.FC = () => {
     delete data.repassword;
 
     data.role = "user";
+
+    console.log(data);
     try {
-      reset({
-        phone: "",
-        password: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        repassword: "",
-        terms: false,
-      });
+      const result = await createUser({ ...data }).unwrap();
+      //  message.loading("Creating User!");
+      console.log(result);
+
+      // const logIndata = { email: data.email, password: data.password };
+      // const res = await userLogin({ ...logIndata }).unwrap();
+      // console.log(res);
+      //  message.loading("Creating User!");
+      // reset({
+      //   phone: "",
+      //   password: "",
+      //   email: "",
+      //   firstName: "",
+      //   lastName: "",
+      //   repassword: "",
+      //   terms: false,
+      // });
+
+      if (result?.accessToken) {
+        //  storeUserInfo({ accessToken: res?.accessToken });
+        const { role, id } = getUserInfo() as any;
+        router.push("/profile");
+
+        setUser({ role: role, id: result.id });
+
+        //  message.success("User log in successfully!");
+      } else {
+        //  message.error("User log was not successful! Please try again.");
+      }
     } catch (err: any) {
       console.error(err.message, "this is error message");
+      //  message.error("An error occurred while logging in. Please try again.");
     }
   };
 

@@ -8,7 +8,18 @@ function Main() {
       <div></div>
       <div className="flex justify-between  gap-3">
         <div className="w-full sm:w-4/5 ">
-          <Blog />
+          <Blog
+            blog={{
+              content: "",
+              createdAt: "",
+              id: "",
+              thumbnailImg: "",
+              title: "",
+              typeId: "",
+              updatedAt: "",
+              userId: "",
+            }}
+          />
         </div>
         <div className=" w-1/5  ">
           <Topics />
