@@ -39,12 +39,12 @@ function WriteForm() {
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  console.log(selectedImage, "this is imege");
+  // console.log(selectedImage, "this is imege");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      console.log(files, files[0]);
+      // console.log(files, files[0]);
       setSelectedImage(files[0]);
     } else {
       setSelectedImage(null);
@@ -61,7 +61,7 @@ function WriteForm() {
     if (selectedImage) {
       data.image = selectedImage;
     }
-    console.log("Form values:", data);
+    // console.log("Form values:", data);
 
     // You can perform further actions, such as sending data to a server, here.
   };

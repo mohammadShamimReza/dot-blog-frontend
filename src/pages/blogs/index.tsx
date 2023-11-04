@@ -3,7 +3,41 @@ import Blog from "@/components/main/Blog";
 import Topics from "@/components/main/Topics";
 import { ReactElement } from "react";
 
-function Blogs() {
+type BlogsData = {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: {
+    data: {
+      content: string;
+      createdAt: string;
+      id: string;
+      thumbnailImg: string;
+      title: string;
+      typeId: string;
+      updatedAt: string;
+      userId: string;
+    }[];
+    meta: {
+      limit: number;
+      page: number;
+      total: number;
+    };
+  };
+};
+
+export const getServerSideProps = async () => {
+  const res = await fetch("http://localhost:5000/api/v1/blog");
+  const blogs = await res.json();
+  console.log(blogs, "this is from blogs");
+  return { props: { blogs } };
+};
+
+// satisfies GetServerSideProps<{
+//   blogs: any;
+// }>;
+
+function Blogs({ blogs }: { blogs: BlogsData }) {
   return (
     <div>
       <div className="">
@@ -19,7 +53,9 @@ function Blogs() {
                 />
               </div>
             </div>
-            <Blog />
+            {blogs?.data?.data?.map((blog) => (
+              <Blog key={blog.id} blog={blog} />
+            ))}
           </div>
           <div className=" w-1/5  ">
             <Topics />

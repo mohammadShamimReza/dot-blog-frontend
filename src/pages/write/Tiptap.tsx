@@ -29,7 +29,7 @@ function Tiptap({ onChange }: { onChange: (richText: string) => void }) {
     injectCSS: true,
     onUpdate({ editor }) {
       onChange(editor.getHTML());
-      console.log(editor.getHTML());
+      // console.log(editor.getHTML());
     },
   });
 

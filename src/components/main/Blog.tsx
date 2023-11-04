@@ -2,11 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { AiFillLike } from "react-icons/ai";
 
-function Blog() {
+type Blog = {
+  content: string;
+  createdAt: string;
+  id: string;
+  thumbnailImg: string;
+  title: string;
+  typeId: string;
+  updatedAt: string;
+  userId: string;
+};
+
+function Blog({ blog }: { blog: Blog }) {
+  console.log(blog);
   return (
     <div className="">
       {" "}
-      <div className="h-72 mb-3">
+      <div className="h-72 mb-10">
         <div
           className="bg-white p-4 rounded-lg shadow-xl border border-t dark:border-none  mb-4 transition duration-100 transform hover:shadow-2xl 
           isDarkMode dark:bg-gray-800 hover:dark:shadow-slate-600 h-72 flex flex-col justify-between"
