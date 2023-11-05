@@ -1,4 +1,7 @@
-import React, { ChangeEvent, ReactElement, useState } from "react";
+import { EditableField } from "@/components/Fields/EditableFields";
+import { useUsersByIdQuery } from "@/redux/api/userApi";
+import { getUserInfo } from "@/services/auth.service";
+import { ChangeEvent, ReactElement, useState } from "react";
 import {
   AiFillGithub,
   AiFillLinkedin,
@@ -8,76 +11,19 @@ import {
 import Layout from "../../components/Layouts/Layout";
 import MyBlogs from "./MyBlogs";
 
-interface EditableFieldProps {
-  isEditing: boolean;
-  value: string;
-  onSave?: () => void;
-  onEdit?: () => void;
-  onChange: (e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => void;
-  isTextArea?: boolean;
-  icon?: React.ReactNode;
-  link?: string;
-}
-
-const EditableField: React.FC<EditableFieldProps> = ({
-  isEditing,
-  value,
-  onSave,
-  onEdit,
-  onChange,
-  isTextArea, // New prop to indicate textarea
-  icon,
-  link,
-}) => {
-  return (
-    <div className="flex gap-2 items-center w-full">
-      {isEditing ? (
-        <>
-          {isTextArea ? ( // Conditionally render a textarea
-            <textarea
-              value={value}
-              className=" border-2 rounded-lg w-full"
-              onChange={onChange}
-            />
-          ) : (
-            <>
-              {" "}
-              <input
-                type="text"
-                value={value}
-                className="border-2 rounded-lg w-full"
-                onChange={onChange}
-              />
-              <AiOutlineSave onClick={onSave} className="w-6 h-6" />
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          {icon}
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            {value}
-          </a>
-          {isTextArea ? (
-            ""
-          ) : (
-            <AiOutlineEdit
-              onClick={onEdit}
-              className="w-6 h-6 hover:cursor-pointer"
-            />
-          )}
-        </>
-      )}
-    </div>
-  );
-};
-
 const ProfileData = () => {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingJob, setIsEditingJob] = useState(false);
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [isEditingLinkedIn, setIsEditingLinkedIn] = useState(false);
   const [isEditingGitHub, setIsEditingGitHub] = useState(false);
+
+  const { id, role, email } = getUserInfo() as any;
+  const { data: userData, isLoading } = useUsersByIdQuery(id);
+
+  console.log(userData);
+
+  const profileData = userData?.data;
 
   const [name, setName] = useState("Morsed Hasan");
   const [job, setJob] = useState("Software Engineer");

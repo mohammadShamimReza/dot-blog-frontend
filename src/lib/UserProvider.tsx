@@ -32,6 +32,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User>({ role: "", id: "" });
 
+  console.log(user);
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

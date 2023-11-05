@@ -51,9 +51,13 @@ const LoginForm: React.FC = () => {
         const { role, id } = getUserInfo() as any;
         reset({ email: "", password: "" });
         console.log(role);
-        router.push("/profile");
+        router.push(`/profile${id}`);
 
-        setUser({ role: role, id: res.id });
+        setUser({ role: role, id: id });
+
+        console.log(user);
+
+
 
         // message.success("User log in successfully!");
       } else {

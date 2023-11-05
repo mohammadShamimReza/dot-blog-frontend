@@ -5,7 +5,7 @@ import {
   useCreateUserMutation,
   useUserLoginMutation,
 } from "@/redux/api/authApi";
-import { getUserInfo } from "@/services/auth.service";
+import { getUserInfo, storeUserInfo } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,8 +24,9 @@ const SignupForm: React.FC = () => {
   const { user, setUser } = useUser();
 
   const validationSchema = yup.object().shape({
-    firstName: yup.string().required("First Name is required"),
-    lastName: yup.string().required("Last Name is required"),
+    name: yup.string().required("Name is required"),
+    designation: yup.string().required("designation is required"),
+    experience: yup.string().required("designation is required"),
     email: yup.string().email("Invalid email").required("Email is required"),
     password: yup
       .string()
@@ -60,29 +61,26 @@ const SignupForm: React.FC = () => {
       //  message.loading("Creating User!");
       console.log(result);
 
-      // const logIndata = { email: data.email, password: data.password };
-      // const res = await userLogin({ ...logIndata }).unwrap();
-      // console.log(res);
-      //  message.loading("Creating User!");
-      // reset({
-      //   phone: "",
-      //   password: "",
-      //   email: "",
-      //   firstName: "",
-      //   lastName: "",
-      //   repassword: "",
-      //   terms: false,
-      // });
+      reset({
+        phone: "",
+        password: "",
+        email: "",
+        name: "",
+        designation: "",
+        experience: "",
+        repassword: "",
+        terms: false,
+      });
 
       if (result?.accessToken) {
-        //  storeUserInfo({ accessToken: res?.accessToken });
+        storeUserInfo({ accessToken: result?.accessToken });
         const { role, id } = getUserInfo() as any;
-        router.push("/profile");
 
-        setUser({ role: role, id: result.id });
+        setUser({ role: role, id: id });
+      router.push(`/profile${id}`);
 
         //  message.success("User log in successfully!");
-      } else {
+        // } else {
         //  message.error("User log was not successful! Please try again.");
       }
     } catch (err: any) {
@@ -105,9 +103,9 @@ const SignupForm: React.FC = () => {
         <h1 className="text-2xl text-center mb-4 font-semibold ">Sign Up</h1>
         <form onSubmit={handleSubmit(handleSignup)} className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-600">First Name</label>
+            <label className="block text-sm text-gray-600">Name</label>
             <Controller
-              name="firstName"
+              name="name"
               control={control}
               render={({ field }) => (
                 <input
@@ -117,14 +115,14 @@ const SignupForm: React.FC = () => {
                 />
               )}
             />
-            {errors.firstName && (
-              <p className="text-red-500 text-xs">{errors.firstName.message}</p>
+            {errors.name && (
+              <p className="text-red-500 text-xs">{errors.name.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm text-gray-600">Last Name</label>
+            <label className="block text-sm text-gray-600">designation</label>
             <Controller
-              name="lastName"
+              name="designation"
               control={control}
               render={({ field }) => (
                 <input
@@ -134,10 +132,28 @@ const SignupForm: React.FC = () => {
                 />
               )}
             />
-            {errors.lastName && (
-              <p className="text-red-500 text-xs">{errors.lastName.message}</p>
+            {errors.designation && (
+              <p className="text-red-500 text-xs">
+                {errors.designation.message}
+              </p>
             )}
           </div>
+          <div>
+            <label className="block text-sm text-gray-600">experience</label>
+            <Controller
+              name="experience"
+              control={control}
+              render={({ field }) => (
+                <textarea {...field} className="w-full border p-2 rounded-md" />
+              )}
+            />
+            {errors.experience && (
+              <p className="text-red-500 text-xs">
+                {errors.experience.message}
+              </p>
+            )}
+          </div>
+
           <div>
             <label className="block text-sm text-gray-600">Email</label>
             <Controller

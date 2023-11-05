@@ -1,16 +1,16 @@
+import { useUser } from "@/lib/UserProvider";
 import Link from "next/link";
-import { useState } from "react";
 import { RxAvatar } from "react-icons/rx";
 
 function User() {
-  const [user, setUser] = useState(true);
+  const { user, setUser } = useUser();
 
   return (
     <div>
       <div className="relative group">
         <RxAvatar className="w-8 h-8" />
 
-        {!user && (
+        {user.role === "" && (
           <div className="absolute hidden  group-hover:block top-full right-2 space-y-2">
             <div className="">
               <Link href={"/login"}>
@@ -29,7 +29,7 @@ function User() {
           </div>
         )}
 
-        {user && (
+        {user.role === "user" && (
           <div className="absolute hidden  group-hover:block top-full right-2 space-y-2">
             <div className="">
               <Link href={"/profile/asdf"}>
