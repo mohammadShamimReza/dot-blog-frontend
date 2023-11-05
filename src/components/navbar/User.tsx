@@ -32,7 +32,7 @@ function User() {
         {user.role === "user" && (
           <div className="absolute hidden  group-hover:block top-full right-2 space-y-2">
             <div className="">
-              <Link href={"/profile/asdf"}>
+              <Link href={`/profile/${user?.id}`}>
                 <button className="w-20 rounded-lg flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800  hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300">
                   Profile
                 </button>

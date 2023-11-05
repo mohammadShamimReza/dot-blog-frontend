@@ -1,6 +1,7 @@
 import { EditableField } from "@/components/Fields/EditableFields";
 import { useUsersByIdQuery } from "@/redux/api/userApi";
 import { getUserInfo } from "@/services/auth.service";
+import { IBlog } from "@/types";
 import { ChangeEvent, ReactElement, useState } from "react";
 import {
   AiFillGithub,
@@ -21,11 +22,10 @@ const ProfileData = () => {
   const { id, role, email } = getUserInfo() as any;
   const { data: userData, isLoading } = useUsersByIdQuery(id);
 
-  console.log(userData);
+  const UserProfileData = userData;
 
-  const profileData = userData?.data;
+  const [name, setName] = useState("");
 
-  const [name, setName] = useState("Morsed Hasan");
   const [job, setJob] = useState("Software Engineer");
   const [experience, setExperience] = useState(
     "Software Engineer with 5+ years of experience in web development and software design. Proficient in JavaScript, React, Node.js, and more."
@@ -89,7 +89,7 @@ const ProfileData = () => {
           {/* Fixed "align-middle" to "items-center" */}
           <EditableField
             isEditing={isEditingName}
-            value={name}
+            value={UserProfileData?.name}
             onSave={handleSaveName}
             onEdit={() => setIsEditingName(true)}
             onChange={handleChangeName}
@@ -99,7 +99,7 @@ const ProfileData = () => {
         <div className="mb-2 flex gap-2">
           <EditableField
             isEditing={isEditingJob}
-            value={job}
+            value={UserProfileData?.designation}
             onSave={handleSaveJob}
             onEdit={() => setIsEditingJob(true)}
             onChange={handleChangeJob}
@@ -124,9 +124,7 @@ const ProfileData = () => {
           <div className=" mb-2 flex gap-2">
             <EditableField
               isEditing={isEditingExperience}
-              value={experience}
-              // onSave={handleSaveExperience}
-              // onEdit={() => setIsEditingExperience(true)}
+              value={UserProfileData?.experience}
               onChange={handleChangeExperience}
               isTextArea={true}
             />
@@ -136,7 +134,7 @@ const ProfileData = () => {
         <div className="mt-4">
           <EditableField
             isEditing={isEditingLinkedIn}
-            value={linkedin}
+            value={UserProfileData?.linkedIn}
             onSave={handleSaveLinkedIn}
             onEdit={() => setIsEditingLinkedIn(true)}
             onChange={handleChangeLinkedIn}
@@ -145,7 +143,7 @@ const ProfileData = () => {
           />
           <EditableField
             isEditing={isEditingGitHub}
-            value={github}
+            value={UserProfileData?.github}
             onSave={handleSaveGitHub}
             onEdit={() => setIsEditingGitHub(true)}
             onChange={handleChangeGitHub}
@@ -158,7 +156,9 @@ const ProfileData = () => {
       </div>
       <p className="text-center font-semibold text-lg">Blogs</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
-        <MyBlogs />
+        {UserProfileData?.blogs.map((data: IBlog) => {
+          <MyBlogs key={data.id} blog={data} />;
+        })}
       </div>
     </div>
   );

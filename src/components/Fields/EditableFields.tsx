@@ -1,5 +1,4 @@
 import { ChangeEvent } from "react";
-import { AiOutlineEdit, AiOutlineSave } from "react-icons/ai";
 
 interface EditableFieldProps {
   isEditing: boolean;
@@ -26,7 +25,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
     <div className="flex gap-2 items-center w-full">
       {isEditing ? (
         <>
-          {isTextArea ? ( // Conditionally render a textarea
+          {isTextArea ? (
             <textarea
               value={value}
               className=" border-2 rounded-lg w-full"
@@ -41,7 +40,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
                 className="border-2 rounded-lg w-full"
                 onChange={onChange}
               />
-              <AiOutlineSave onClick={onSave} className="w-6 h-6" />
+              {/* <AiOutlineSave onClick={onSave} className="w-6 h-6" /> */}
             </>
           )}
         </>
@@ -51,14 +50,14 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           <a href={link} target="_blank" rel="noopener noreferrer">
             {value}
           </a>
-          {isTextArea ? (
-            ""
-          ) : (
-            <AiOutlineEdit
-              onClick={onEdit}
-              className="w-6 h-6 hover:cursor-pointer"
-            />
-          )}
+          {isTextArea
+            ? ""
+            : ""
+              // <AiOutlineEdit
+              //   onClick={onEdit}
+              //   className="w-6 h-6 hover:cursor-pointer"
+              // />
+          }
         </>
       )}
     </div>

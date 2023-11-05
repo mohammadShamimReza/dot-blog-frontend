@@ -1,8 +1,4 @@
-import { useUser } from "@/lib/UserProvider";
-
 function Footer() {
-  const user = useUser();
-  console.log(user.user);
   const currentYear = new Date().getFullYear();
 
   return (

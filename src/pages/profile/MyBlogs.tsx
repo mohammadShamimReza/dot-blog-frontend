@@ -1,4 +1,7 @@
-function MyBlogs() {
+import { IBlog } from "@/types";
+
+function MyBlogs({ blog }: { blog: IBlog }) {
+  console.log(blog);
   return (
     <div className="m-3">
       <div className="max-w-sm  overflow-hidden border rounded-lg">
