@@ -62,6 +62,8 @@ export type IReview = {
   blog: IBlog; // Assuming you have a Blog interface/type defined
 };
 
+export type ISingleBlog = {};
+
 export type IBlog = {
   id: string;
   title: string;

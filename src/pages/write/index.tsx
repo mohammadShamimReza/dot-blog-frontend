@@ -1,15 +1,17 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ReactElement, RefObject, useRef, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-
 import { useCreateBlogMutation } from "@/redux/api/blogApi";
 import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlogType } from "@/types";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import * as yup from "yup";
 import Layout from "../../components/Layouts/Layout";
-import Tiptap from "./Tiptap";
 
 interface FormInputs {
   userId: string;
@@ -33,22 +35,35 @@ const schema = yup.object().shape({
 
 function WriteForm() {
   const { data: blogTypes, error } = useTypesQuery({});
-  const [createBlog, { data }] = useCreateBlogMutation();
+  const [createBlog, { data, isSuccess }] = useCreateBlogMutation();
   const { id } = getUserInfo() as any;
   const blogtypes = blogTypes;
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
+  const router = useRouter();
   const {
+    register,
     control,
+    watch,
     handleSubmit,
     formState: { errors },
+    reset,
+    setValue,
   } = useForm<FormInputs>({
     resolver: yupResolver(schema) as any,
     mode: "onChange",
   });
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  useEffect(() => {
+    register("content");
+  }, [register]);
 
-  // console.log(selectedImage, "this is imege");
+  const onEditorStateChange = (editorState: string) => {
+    setValue("content", editorState);
+  };
+
+  const editorContent = watch("content");
+
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -60,9 +75,9 @@ function WriteForm() {
     }
   };
   const handleRemoveImage = () => {
-    setSelectedImage(null); // Remove the selected image from the state
+    setSelectedImage(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset the file input value
+      fileInputRef.current.value = "";
     }
   };
 
@@ -73,22 +88,36 @@ function WriteForm() {
     data.thumbnailImg = "";
     data.userId = id;
 
-    const buildBlog = await createBlog(data);
+    try {
+      const buildBlog = await createBlog(data);
 
-    console.log(buildBlog);
+      console.log(buildBlog, isSuccess);
+      buildBlog
+        ? toast("Blog created successfully", {
+            style: {
+              border: "1px solid black",
+            },
+          })
+        : toast("Blog not created successfully");
+      reset({ thumbnailImg: "", title: "", typeId: "" });
+      handleRemoveImage();
 
-    if (selectedImage) {
-      data.thumbnailImg = selectedImage;
+      if ("data" in buildBlog) {
+        // Handle the success case
+        const blogId = buildBlog.data!.id;
+        router.push(`/blogs/${blogId}`);
+      } else {
+        console.error("An error occurred:", buildBlog.error);
+      }
+      console.log(buildBlog);
+    } catch (error) {
+      console.log(error);
     }
-
-    console.log(data);
-    // console.log("Form values:", data);
-
-    // You can perform further actions, such as sending data to a server, here.
   };
 
   return (
     <div>
+      <Toaster />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="rounded-lg overflow-hidden max-w-4xl mx-auto border border-gray-400 p-4"
@@ -180,22 +209,30 @@ function WriteForm() {
           )}
         </div>
 
-        {/* <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          Upload
-        </button> */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Content</label>
-          <Controller
+          {/* <Controller
             name="content"
             control={control}
             defaultValue=""
-            render={({ field }) => <Tiptap onChange={field.onChange} />}
+            render={({ field }) =>
+              <Tiptap onChange={field.onChange} />
+            }
+          /> */}
+
+          <ReactQuill
+            className="h-72 "
+            theme="snow"
+            value={editorContent}
+            onChange={onEditorStateChange}
           />
-          <p>{errors.content?.message}</p>
+
+          {errors.content && (
+            <p className="text-red-600">{errors.content.message}</p>
+          )}
         </div>
+        <br />
+        <br />
         <button
           type="submit"
           className="py-2 px-6 bg-gray-300 border rounded hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover:bg-slate-400 dark:text-blackr"

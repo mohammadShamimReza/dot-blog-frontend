@@ -31,33 +31,20 @@ function SingleBlog() {
   const onSubmit = async (data: any) => {
     data.userId = userId;
     data.blogId = id;
-    console.log(data);
 
     try {
       const result = await createReview({ ...data }).unwrap();
-      //  message.loading("Creating User!");
       console.log(result);
 
       reset({
         text: "",
       });
-
-      //  if (result?.accessToken) {
-      //    storeUserInfo({ accessToken: result?.accessToken });
-      //    const { role, id } = getUserInfo() as any;
-
-      //    setUser({ role: role, id: id });
-      //    router.push(`/profile${id}`);
-
-      //    //  message.success("User log in successfully!");
-      //    // } else {
-      //    //  message.error("User log was not successful! Please try again.");
-      //  }
     } catch (err: any) {
       console.error(err.message, "this is error message");
-      //  message.error("An error occurred while logging in. Please try again.");
     }
   };
+
+  // console.log(blogData?.user.profileImg);
 
   return (
     <div>
@@ -65,7 +52,7 @@ function SingleBlog() {
         <Link href={`/profile/${userId}`}>
           <div className="">
             <Image
-              src={""}
+              src={blogData?.user?.profileImg || ""}
               height={2}
               width={2}
               alt="Writer"

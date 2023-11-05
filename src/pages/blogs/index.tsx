@@ -1,6 +1,8 @@
 import Layout from "@/components/Layouts/Layout";
 import Blog from "@/components/main/Blog";
 import Topics from "@/components/main/Topics";
+import { useBlogQuery } from "@/redux/api/blogApi";
+import { IBlog } from "@/types";
 import { ReactElement } from "react";
 
 type BlogsData = {
@@ -26,18 +28,10 @@ type BlogsData = {
   };
 };
 
-export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:5000/api/v1/blog");
-  const blogs = await res.json();
-  console.log(blogs, "this is from blogs");
-  return { props: { blogs } };
-};
+function Blogs() {
+  const { data } = useBlogQuery({});
+  const blogData = data?.data;
 
-// satisfies GetServerSideProps<{
-//   blogs: any;
-// }>;
-
-function Blogs({ blogs }: { blogs: BlogsData }) {
   return (
     <div>
       <div className="">
@@ -53,7 +47,7 @@ function Blogs({ blogs }: { blogs: BlogsData }) {
                 />
               </div>
             </div>
-            {blogs?.data?.data?.map((blog) => (
+            {blogData?.map((blog: IBlog) => (
               <Blog key={blog.id} blog={blog} />
             ))}
           </div>

@@ -148,17 +148,17 @@ const ProfileData = () => {
             onEdit={() => setIsEditingGitHub(true)}
             onChange={handleChangeGitHub}
             icon={
-              <AiFillGithub className="w-6 h-6 text-gray-800" /> /* Fixed the icon color */
+              <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" /> /* Fixed the icon color */
             }
             link={github}
           />
         </div>
       </div>
       <p className="text-center font-semibold text-lg">Blogs</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
-        {UserProfileData?.blogs.map((data: IBlog) => {
-          <MyBlogs key={data.id} blog={data} />;
-        })}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center pt-10">
+        {UserProfileData?.blogs.map((data: IBlog) => (
+          <MyBlogs key={data.id} blog={data} />
+        ))}
       </div>
     </div>
   );
