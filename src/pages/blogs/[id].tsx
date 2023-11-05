@@ -1,14 +1,68 @@
 import Layout from "@/components/Layouts/Layout";
+import { useBlogByIdQuery } from "@/redux/api/blogApi";
+import { useCreateReviewMutation } from "@/redux/api/reviewApi";
+import { getUserInfo } from "@/services/auth.service";
+import { IReview } from "@/types";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ReactElement } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { MdOutlineUnsubscribe } from "react-icons/md";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  text: yup.string().required("Review is required"),
+});
 
 function SingleBlog() {
+  const router = useRouter();
+  const id = router.query.id as string;
+  const { data: blogData } = useBlogByIdQuery(id);
+  const { id: userId } = getUserInfo() as any;
+  const [createReview, { data, status }] = useCreateReviewMutation();
+
+  const { handleSubmit, control, reset, formState } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const { errors } = formState;
+
+  const onSubmit = async (data: any) => {
+    data.userId = userId;
+    data.blogId = id;
+    console.log(data);
+
+    try {
+      const result = await createReview({ ...data }).unwrap();
+      //  message.loading("Creating User!");
+      console.log(result);
+
+      reset({
+        text: "",
+      });
+
+      //  if (result?.accessToken) {
+      //    storeUserInfo({ accessToken: result?.accessToken });
+      //    const { role, id } = getUserInfo() as any;
+
+      //    setUser({ role: role, id: id });
+      //    router.push(`/profile${id}`);
+
+      //    //  message.success("User log in successfully!");
+      //    // } else {
+      //    //  message.error("User log was not successful! Please try again.");
+      //  }
+    } catch (err: any) {
+      console.error(err.message, "this is error message");
+      //  message.error("An error occurred while logging in. Please try again.");
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between align-middle">
-        <Link href={"/profile/asdf"}>
+        <Link href={`/profile/${userId}`}>
           <div className="">
             <Image
               src={""}
@@ -18,7 +72,7 @@ function SingleBlog() {
               className="flex w-8 h-8 rounded-full mr-2"
             />
 
-            <span>Morsed Hasan</span>
+            <span>{blogData?.user.name}</span>
           </div>
         </Link>
 
@@ -34,90 +88,56 @@ function SingleBlog() {
           className="text-gray-800 mb-4 
             dark:text-gray-300 text-2xl font-semibold"
         >
-          title
+          {blogData?.title}
         </div>
         <div className="flex justify-center align-middle">
-          The US Bureau of Labour Statistics projects a 13% growth in job
-          opportunities in the web development industry between 2020 and 2030.
-          In terms of the average of all other professions, it is one of the
-          highest numbers. Many people are preparing to embrace this expansion
-          and advance their professions as a result of the drastically increased
-          activity in the field. As the name suggests, web development is the
-          process of creating and maintaining websites. Working on things like
-          web design, publishing, programming, and maintenance are all included.
-          In this article, we’ll examine how a practical web development plan
-          might help you approach the web development process. Let’s start.
-          Who’s a web Developer? A web developer is a specialist who creates
-          websites for people or companies. A full-stack web developer works on
-          the website’s front-end and back-end elements. The appearance of
-          websites when they are sent to clients is covered by the front-end
-          component. On the other hand, the back-end component securely
-          processes and stores data. Web developers are one of the most
-          in-demand occupations in the modern digital world, as practically
-          every company seeks its own website. They are among the highest paid
-          professions because of the magnitude of influence their expertise has.
-          Even working as a web developer may be entertaining and lucrative.
-          Their work necessitates patience, concentration, and an enthusiasm for
-          a variety of instruments and technology. If you’re one of those tech
-          nerds interested in learning about web development, this site is for
-          you. What is web development? As was already said, the process of
-          creating a website is known as web development. Let’s comprehend the
-          operation of a website and the differences between front-end and
-          back-end development. The two of these principles should be learned as
-          part of a web developer’s roadmap. How does a website work? At its
-          core, every website is just a collection of files kept on a computer
-          system known as a server. This server then establishes a connection to
-          the internet. Afterward, you can use a browser on your device, such as
-          Chrome, Safari, or Firefox, to access the specific website. As a
-          result, whenever you browse the internet, you get data (such
-          photographs of dogs) through the server and send data back to the
-          server (load more dog images). The basis of the internet can be
-          thought of as this back and forth data exchange between the server and
-          you (the client). Any component that you may access through your
-          browser, especially a website, was created by a web developer. These
-          components range from corporate websites and content to extremely
-          complex web services like Amazon, Twitter, and LinkedIn. What’s the
-          difference between front-end and back-end? The terms “front-end,”
-          “back-end,” and “full-stack” web development specify which
-          client/server component you’ll be working on (here, “client” can refer
-          to a web browser, such as Google Chrome, Firefox, etc., whereas
-          “server” is a web application server at a remote location that will
-          process web requests and send pages to the client). The work you’ll be
-          doing is referred to as “front-end” and will mostly concern the client
-          side, or the area of the website that users interact with. It is
-          referred to as the “front-end,” because it contains elements that you
-          may view in your browser. On the other hand, the “back-end” is the
-          part of a website you can’t see, but it deals with a lot of important
-          functionality and logic and is in charge of how a website functions
-          internally. Web Development Roadmap Let’s get started on the web
-          development roadmap now that you know how a website works and the
-          fundamental differences between front-end and back-end development.
-          You should start your web development adventure by following a
-          sequence of steps that lead to the desired result, namely a dynamic
-          and user-friendly website. To start your web development journey
-          successfully, adhere to the guidelines listed below. 1. Select a
-          Technology Database administration, front-end development, and
-          back-end development are all included in full-stack development. The
-          technology you should use depends on specific users, requirements, and
-          implementations. There are a few popular technologies that you can
-          select from, including: 1.MERN: The most popular and well-known
-          technology right now is MERN. The following four technologies are
-          represented by the four letters in it. M — MongoDB: For high-volume
-          data storage, MongoDB is a document-oriented NoSQL (normally,
-          databases utilise SQL to store and retrieve data) database. E —
-          Express is a node js web application framework that offers a wide
-          range of functionality for creating web and mobile applications. It
-          covers operations such as GET, PUT, POST, and DELETE. R — React: React
-          is a JavaScript library used to create single-page apps and create
-          user interfaces. N — NodeJS: Node.js is an open-source server-side
-          JavaScript code execution platform. Real-time apps frequently employ
-          Node, which is helpful for creating applications that need a
-          persistent connection between the browser and the server.
+          {blogData?.content && (
+            <div dangerouslySetInnerHTML={{ __html: blogData.content }} />
+          )}
         </div>
       </div>
       <br />
       <br />
-      <div className="text-2xl">comments</div>
+      <div className="text-2xl text-center p-5">Reviews</div>
+      <br />
+
+      <div className="text-base ">
+        {blogData?.review.map((review: IReview, index: number) => (
+          <div key={index} className=" p-4 my-4 border rounded-xl">
+            {review.text}
+          </div>
+        ))}
+      </div>
+      <br />
+      <br />
+      <br />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-4">
+          <label htmlFor="text" className="block  font-semibold mb-2">
+            Give Review
+          </label>
+          <Controller
+            name="text"
+            control={control}
+            render={({ field }) => (
+              <textarea
+                {...field}
+                className="border rounded w-full py-2 px-3"
+              />
+            )}
+          />
+          {errors.text && (
+            <p className="text-red-500 text-sm">{errors.text.message}</p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="bg-gray-200 border rounded-xl py-2 px-4 hover:bg-gray-300  dark:bg-gray-500 dark:hover:bg-slate-400 dark:text-white"
+        >
+          Review
+        </button>
+      </form>
     </div>
   );
 }

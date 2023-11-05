@@ -3,20 +3,25 @@ import { ReactElement, RefObject, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
+import { useCreateBlogMutation } from "@/redux/api/blogApi";
+import { useTypesQuery } from "@/redux/api/typeApi";
+import { getUserInfo } from "@/services/auth.service";
+import { IBlogType } from "@/types";
 import Image from "next/image";
 import Layout from "../../components/Layouts/Layout";
 import Tiptap from "./Tiptap";
 
 interface FormInputs {
+  userId: string;
   title: string;
-  topic: string;
+  typeId: string;
   content: string;
-  image: File | null;
+  thumbnailImg: File | null | string;
 }
 
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
-  topic: yup.string().required("Topic is required"),
+  typeId: yup.string().required("type is required"),
   content: yup.string().required("Content is required"),
   image: yup.mixed().test("file", "File is required", function (file) {
     if (this.parent.image) {
@@ -27,6 +32,10 @@ const schema = yup.object().shape({
 });
 
 function WriteForm() {
+  const { data: blogTypes, error } = useTypesQuery({});
+  const [createBlog, { data }] = useCreateBlogMutation();
+  const { id } = getUserInfo() as any;
+  const blogtypes = blogTypes;
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const {
     control,
@@ -57,10 +66,22 @@ function WriteForm() {
     }
   };
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    const image = data.thumbnailImg;
+
+    console.log(data);
+    data.thumbnailImg = "";
+    data.userId = id;
+
+    const buildBlog = await createBlog(data);
+
+    console.log(buildBlog);
+
     if (selectedImage) {
-      data.image = selectedImage;
+      data.thumbnailImg = selectedImage;
     }
+
+    console.log(data);
     // console.log("Form values:", data);
 
     // You can perform further actions, such as sending data to a server, here.
@@ -91,11 +112,11 @@ function WriteForm() {
           <p>{errors.title?.message}</p>
         </div>
         <div className="mb-4">
-          <label htmlFor="topic" className="block mb-2">
+          <label htmlFor="typeId" className="block mb-2">
             Topic
           </label>
           <Controller
-            name="topic"
+            name="typeId"
             control={control}
             defaultValue=""
             render={({ field }) => (
@@ -105,15 +126,18 @@ function WriteForm() {
                 required
               >
                 <option value="" disabled>
-                  Select a Topic
+                  Select a type
                 </option>
-                <option value="Cloud">Cloud</option>
-                <option value="Software">Software</option>
-                {/* Add more topic options as needed */}
+                {blogtypes?.map((type: IBlogType) => (
+                  <option key={type?.id} value={type?.id}>
+                    {type.title}
+                  </option>
+                ))}
+                {/* Add more type options as needed */}
               </select>
             )}
           />
-          <p>{errors.topic?.message}</p>
+          <p>{errors.typeId?.message}</p>
         </div>
         {selectedImage !== null && (
           <div className="rounded-lg border">
@@ -130,13 +154,13 @@ function WriteForm() {
         )}
 
         <div className="mb-4">
-          <label htmlFor="image" className="py-3 block  font-bold">
+          <label htmlFor="thumbnailImg" className="py-3 block  font-bold">
             Thumbnail Image
           </label>
           <input
             type="file"
-            id="image"
-            name="image"
+            id="thumbnailImg"
+            name="thumbnailImg"
             ref={fileInputRef}
             className="border border-gray-300 p-2 rounded-lg "
             onChange={handleImageChange}
@@ -151,8 +175,8 @@ function WriteForm() {
             </button>
           )}
 
-          {errors.image && (
-            <p className="text-red-600">{errors.image.message}</p>
+          {errors.thumbnailImg && (
+            <p className="text-red-600">{errors.thumbnailImg.message}</p>
           )}
         </div>
 
@@ -174,7 +198,7 @@ function WriteForm() {
         </div>
         <button
           type="submit"
-          className="py-2 px-6 rounded-lg focus:outline-none focus:ring border hover:rounded-3xl hover:border"
+          className="py-2 px-6 bg-gray-300 border rounded hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover:bg-slate-400 dark:text-blackr"
         >
           Publish
         </button>

@@ -1,14 +1,14 @@
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
-const PACKAGE_URL = "/packages";
+const REVIEW_URL = "/reviews";
 
-export const packageApi = baseApi.injectEndpoints({
+export const reviewApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    createPackageTour: build.mutation({
+    createReview: build.mutation({
       query: (data) => {
         return {
-          url: `${PACKAGE_URL}`,
+          url: `${REVIEW_URL}`,
           method: "POST",
           data: data,
         };
@@ -19,10 +19,10 @@ export const packageApi = baseApi.injectEndpoints({
         tagTypes.packageReviewRating,
       ],
     }),
-    packageTour: build.query({
+    Review: build.query({
       query: (arg: Record<string, any>) => {
         return {
-          url: PACKAGE_URL,
+          url: REVIEW_URL,
           method: "GET",
           params: arg,
         };
@@ -34,10 +34,10 @@ export const packageApi = baseApi.injectEndpoints({
         tagTypes.packageReviewRating,
       ],
     }),
-    packageTourById: build.query({
+    ReviewById: build.query({
       query: (id: string) => {
         return {
-          url: `${PACKAGE_URL}/${id}`,
+          url: `${REVIEW_URL}/${id}`,
           method: "GET",
         };
       },
@@ -48,10 +48,10 @@ export const packageApi = baseApi.injectEndpoints({
         tagTypes.packageReviewRating,
       ],
     }),
-    deletePackageTour: build.mutation({
+    deleteReview: build.mutation({
       query: (id: string) => {
         return {
-          url: `${PACKAGE_URL}/${id}`,
+          url: `${REVIEW_URL}/${id}`,
           method: "DELETE",
         };
       },
@@ -61,10 +61,10 @@ export const packageApi = baseApi.injectEndpoints({
         tagTypes.packageReviewRating,
       ],
     }),
-    updatePackageTour: build.mutation({
+    updateReview: build.mutation({
       query: (data) => {
         return {
-          url: `${PACKAGE_URL}/${data.id}`,
+          url: `${REVIEW_URL}/${data.id}`,
           method: "PATCH",
           data: data.body,
         };
@@ -79,9 +79,9 @@ export const packageApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useCreatePackageTourMutation,
-  useDeletePackageTourMutation,
-  usePackageTourByIdQuery,
-  usePackageTourQuery,
-  useUpdatePackageTourMutation,
-} = packageApi;
+  useCreateReviewMutation,
+  useDeleteReviewMutation,
+  useReviewByIdQuery,
+  useReviewQuery,
+  useUpdateReviewMutation,
+} = reviewApi;

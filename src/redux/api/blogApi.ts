@@ -1,14 +1,14 @@
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
-const PACKAGE_URL = "/blog";
+const BLOG_URL = "/blog";
 
 export const blogApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createBlog: build.mutation({
       query: (data) => {
         return {
-          url: `${PACKAGE_URL}`,
+          url: `${BLOG_URL}`,
           method: "POST",
           data: data,
         };
@@ -22,7 +22,7 @@ export const blogApi = baseApi.injectEndpoints({
     Blog: build.query({
       query: (arg: Record<string, any>) => {
         return {
-          url: PACKAGE_URL,
+          url: BLOG_URL,
           method: "GET",
           params: arg,
         };
@@ -34,10 +34,10 @@ export const blogApi = baseApi.injectEndpoints({
         tagTypes.packageReviewRating,
       ],
     }),
-    BlogBuId: build.query({
+    BlogById: build.query({
       query: (id: string) => {
         return {
-          url: `${PACKAGE_URL}/${id}`,
+          url: `${BLOG_URL}/${id}`,
           method: "GET",
         };
       },
@@ -51,7 +51,7 @@ export const blogApi = baseApi.injectEndpoints({
     deleteBlog: build.mutation({
       query: (id: string) => {
         return {
-          url: `${PACKAGE_URL}/${id}`,
+          url: `${BLOG_URL}/${id}`,
           method: "DELETE",
         };
       },
@@ -64,7 +64,7 @@ export const blogApi = baseApi.injectEndpoints({
     updateBlog: build.mutation({
       query: (data) => {
         return {
-          url: `${PACKAGE_URL}/${data.id}`,
+          url: `${BLOG_URL}/${data.id}`,
           method: "PATCH",
           data: data.body,
         };
@@ -81,7 +81,7 @@ export const blogApi = baseApi.injectEndpoints({
 export const {
   useCreateBlogMutation,
   useDeleteBlogMutation,
-  useBlogBuIdQuery,
+  useBlogByIdQuery,
   useBlogQuery,
   useUpdateBlogMutation,
 } = blogApi;

@@ -14,7 +14,6 @@ type Blog = {
 };
 
 function Blog({ blog }: { blog: Blog }) {
-  console.log(blog);
   return (
     <div className="">
       {" "}
@@ -24,7 +23,7 @@ function Blog({ blog }: { blog: Blog }) {
           isDarkMode dark:bg-gray-800 hover:dark:shadow-slate-600 h-72 flex flex-col justify-between"
         >
           <div className="">
-            <Link href={"/blogs/1233"}>
+            <Link href={`/blogs/${blog.id}`}>
               <h2
                 className="text-gray-800 mb-4 
             dark:text-gray-300 text-xl font-semibold"
