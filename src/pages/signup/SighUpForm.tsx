@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as yup from "yup";
 
 interface SignupFormProps {
@@ -73,19 +74,31 @@ const SignupForm: React.FC = () => {
       });
 
       if (result?.accessToken) {
+        toast("Sign Up successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
+
         storeUserInfo({ accessToken: result?.accessToken });
         const { role, id } = getUserInfo() as any;
 
         setUser({ role: role, id: id });
-      router.push(`/profile${id}`);
-
-        //  message.success("User log in successfully!");
-        // } else {
-        //  message.error("User log was not successful! Please try again.");
+        router.push(`/profile${id}`);
+        if (result === undefined) {
+          toast.error("User not found", {
+            style: {
+              border: "1px solid black",
+            },
+          });
+        }
       }
     } catch (err: any) {
-      console.error(err.message, "this is error message");
-      //  message.error("An error occurred while logging in. Please try again.");
+      toast.error("server error", {
+        style: {
+          border: "1px solid black",
+        },
+      });
     }
   };
 
@@ -98,180 +111,189 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md m-auto p-6  rounded-lg border mb-40">
-        <h1 className="text-2xl text-center mb-4 font-semibold ">Sign Up</h1>
-        <form onSubmit={handleSubmit(handleSignup)} className="space-y-4">
-          <div>
-            <label className="block text-sm text-gray-600">Name</label>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-            {errors.name && (
-              <p className="text-red-500 text-xs">{errors.name.message}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm text-gray-600">designation</label>
-            <Controller
-              name="designation"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-            {errors.designation && (
-              <p className="text-red-500 text-xs">
-                {errors.designation.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm text-gray-600">experience</label>
-            <Controller
-              name="experience"
-              control={control}
-              render={({ field }) => (
-                <textarea {...field} className="w-full border p-2 rounded-md" />
-              )}
-            />
-            {errors.experience && (
-              <p className="text-red-500 text-xs">
-                {errors.experience.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600">Email</label>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="email"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-xs">{errors.email.message}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm text-gray-600">Password</label>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="password"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-xs">{errors.password.message}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm text-gray-600">
-              Recheck Password
-            </label>
-            <Controller
-              name="repassword"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="password"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-            {errors.repassword && (
-              <p className="text-red-500 text-xs">
-                {errors.repassword.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600">Phone Number</label>
-            <Controller
-              name="phone"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-            {errors.phone && (
-              <p className="text-red-500 text-xs">{errors.phone.message}</p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="terms"
-                checked={watch("terms")}
-                onChange={toggleTermsCheckbox}
-                className=""
+    <>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-md m-auto p-6  rounded-lg border mb-40">
+          <h1 className="text-2xl text-center mb-4 font-semibold ">Sign Up</h1>
+          <form onSubmit={handleSubmit(handleSignup)} className="space-y-4">
+            <div>
+              <label className="block text-sm text-gray-600">Name</label>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
               />
-              <label className="text-sm  ml-2">
-                I agree to the terms and conditions
-              </label>
+              {errors.name && (
+                <p className="text-red-500 text-xs">{errors.name.message}</p>
+              )}
             </div>
-            {errors.terms && (
-              <p className="text-red-500 text-xs">{errors.terms.message}</p>
-            )}
-          </div>
+            <div>
+              <label className="block text-sm text-gray-600">designation</label>
+              <Controller
+                name="designation"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.designation && (
+                <p className="text-red-500 text-xs">
+                  {errors.designation.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600">experience</label>
+              <Controller
+                name="experience"
+                control={control}
+                render={({ field }) => (
+                  <textarea
+                    {...field}
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.experience && (
+                <p className="text-red-500 text-xs">
+                  {errors.experience.message}
+                </p>
+              )}
+            </div>
 
-          <div>
-            <button
-              type="submit"
-              className={`${
-                isSubmitDisabled ? "bg-gray-300 cursor-not-allowed" : ""
-              }  bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400`}
-              disabled={isSubmitDisabled as boolean}
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
-        <br />
-        <br />
-        <div className="text-right pt-4 ">
-          <div className=" text-left">
-            Already have account ! Please{" "}
-            <Link
-              href={"/login"}
-              className=" font-bold p-2 rounded-md w-full hover:text-gray-500 hover:dark:text-gray-300 text-right underline"
-            >
-              Log In
-            </Link>
+            <div>
+              <label className="block text-sm text-gray-600">Email</label>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="email"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600">Password</label>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="password"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600">
+                Recheck Password
+              </label>
+              <Controller
+                name="repassword"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="password"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.repassword && (
+                <p className="text-red-500 text-xs">
+                  {errors.repassword.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-600">
+                Phone Number
+              </label>
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-xs">{errors.phone.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="terms"
+                  checked={watch("terms")}
+                  onChange={toggleTermsCheckbox}
+                  className=""
+                />
+                <label className="text-sm  ml-2">
+                  I agree to the terms and conditions
+                </label>
+              </div>
+              {errors.terms && (
+                <p className="text-red-500 text-xs">{errors.terms.message}</p>
+              )}
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className={`${
+                  isSubmitDisabled ? "bg-gray-300 cursor-not-allowed" : ""
+                }  bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400`}
+                disabled={isSubmitDisabled as boolean}
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+          <br />
+          <br />
+          <div className="text-right pt-4 ">
+            <div className=" text-left">
+              Already have account ! Please{" "}
+              <Link
+                href={"/login"}
+                className=" font-bold p-2 rounded-md w-full hover:text-gray-500 hover:dark:text-gray-300 text-right underline"
+              >
+                Log In
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

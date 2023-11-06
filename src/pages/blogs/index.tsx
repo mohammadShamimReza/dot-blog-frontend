@@ -1,9 +1,12 @@
 import Layout from "@/components/Layouts/Layout";
 import Blog from "@/components/main/Blog";
-import Topics from "@/components/main/Topics";
 import { useBlogQuery } from "@/redux/api/blogApi";
-import { IBlog } from "@/types";
-import { ReactElement } from "react";
+import { useTypesQuery } from "@/redux/api/typeApi";
+import { IBlog, IBlogType } from "@/types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ReactElement, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
 
 type BlogsData = {
   statusCode: number;
@@ -29,30 +32,78 @@ type BlogsData = {
 };
 
 function Blogs() {
-  const { data } = useBlogQuery({});
-  const blogData = data?.data;
+  const [type, setType] = useState<undefined | string>(undefined);
+  const [searchTerm, setSearchTerm] = useState<undefined | string>(undefined);
+  const { data: blogDatas } = useBlogQuery({
+    typeId: type,
+    searchTerm: searchTerm,
+  });
+  const blogData = blogDatas;
+  const { data: blogTypeDatas } = useTypesQuery({});
+
+  const handleSearchTerm = (data: any) => {
+    console.log(data);
+    setSearchTerm(data.searchTerm);
+  };
+
+  const validationSchema = yup.object().shape({
+    searchTerm: yup.string(),
+  });
+
+  const { control, handleSubmit, reset } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  console.log(blogData);
 
   return (
     <div>
       <div className="">
-        <div className="flex justify-between  gap-3">
-          <div className="w-full sm:w-4/5 ">
-            <div className="flex  justify-center align-middle">
-              <div className="mt-6 mb-14 w-1/2 ">
-                <input
-                  type="text"
-                  name="name"
-                  className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20  ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 "
-                  placeholder="search"
-                />
+        <div className="flex sm:flex-row-reverse flex-col justify-between  gap-3 ">
+          <div className="sm:w-1/5 sm:pt-28 pt-0 flex flex-row sm:flex-col flex-wrap ">
+            {blogTypeDatas?.map((blogType: IBlogType) => (
+              <div key={blogType?.id} className="  ">
+                <div className="p-3">
+                  <button
+                    onClick={() => setType(blogType?.id)}
+                    onDoubleClick={() => setType(undefined)}
+                    className={
+                      type === blogType?.id
+                        ? "light:bg-transparent hover:light:bg-gray-300 hover:dark:bg-gray-700 light:text-gray-700   border border-gray-500 rounded-lg hover:light:shadow-lg hover:dark:shadow-lg transition duration-300 hover:scale-110 bg-gray-500 text-white dark:bg-gray-200 dark:text-black w-full "
+                        : "light:bg-transparent dark:bg-gray-800 hover:light:bg-gray-300 hover:dark:bg-gray-700 light:text-gray-700 dark:text-gray-300 p-1 border border-gray-500 rounded-lg hover:light:shadow-lg hover:dark:shadow-lg transition duration-300 hover:scale-110  w-full"
+                    }
+                  >
+                    {blogType?.title}
+                  </button>
+                </div>
               </div>
-            </div>
-            {blogData?.map((blog: IBlog) => (
-              <Blog key={blog.id} blog={blog} />
             ))}
           </div>
-          <div className=" w-1/5  ">
-            <Topics />
+          <div className="w-full sm:w-4/5 sm:order-1">
+            <form
+              onChange={handleSubmit(handleSearchTerm)}
+              className="flex  justify-center align-middle"
+            >
+              <div className="mt-6 mb-14 w-1/2">
+                <Controller
+                  name="searchTerm"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      id="emasearchTermil"
+                      type="searchTerm"
+                      placeholder="Search here"
+                      className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20  ring-1 ring-inset ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                    />
+                  )}
+                />
+              </div>
+            </form>
+
+            {blogData?.data?.map((blog: IBlog) => (
+              <Blog key={blog.id} blog={blog} />
+            ))}
           </div>
         </div>
       </div>

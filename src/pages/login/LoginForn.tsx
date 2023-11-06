@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 import * as yup from "yup";
 
 interface LoginFormProps {
@@ -45,7 +46,11 @@ const LoginForm: React.FC = () => {
       console.log(res.accessToken);
 
       if (res?.accessToken) {
-        console.log("role");
+        toast("Log In successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
 
         storeUserInfo({ accessToken: res?.accessToken });
         const { role, id } = getUserInfo() as any;
@@ -56,16 +61,20 @@ const LoginForm: React.FC = () => {
         setUser({ role: role, id: id });
 
         console.log(user);
-
-
-
-        // message.success("User log in successfully!");
       } else {
-        // message.error("User log was not successful! Please try again.");
+        toast.error("Log In is not successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
       }
 
       if (res === undefined) {
-        // message.error("User not found. Please check your credentials.");
+        toast.error("User not found", {
+          style: {
+            border: "1px solid black",
+          },
+        });
       }
     } catch (error) {
       console.error(error);
@@ -82,70 +91,76 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md m-4 p-6 rounded-lg border">
-        <h1 className="text-2xl text-center mb-4 font-semibold ">Login</h1>
-        <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
-          <div>
-            <label className="block  text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  id="email"
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-          </div>
-          <div>
-            <label className="block  text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  id="password"
-                  type="password"
-                  placeholder="Your Password"
-                  className="w-full border p-2 rounded-md"
-                />
-              )}
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400"
-            >
-              Login
-            </button>
-          </div>
-        </form>
-        <br />
-        <br />
-        <div className="text-right pt-4 ">
-          <div className=" text-left">
-            Not SignUp yet ! Please{" "}
-            <Link
-              href={"/signup"}
-              className=" font-bold p-2 rounded-md w-full hover:text-gray-500 hover:dark:text-gray-300 text-right underline"
-            >
-              Sign Up
-            </Link>
+    <>
+      <Toaster />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-md m-4 p-6 rounded-lg border">
+          <h1 className="text-2xl text-center mb-4 font-semibold ">Login</h1>
+          <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
+            <div>
+              <label className="block  text-sm font-bold mb-2" htmlFor="email">
+                Email
+              </label>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    id="email"
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+            </div>
+            <div>
+              <label
+                className="block  text-sm font-bold mb-2"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    id="password"
+                    type="password"
+                    placeholder="Your Password"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+          <br />
+          <br />
+          <div className="text-right pt-4 ">
+            <div className=" text-left">
+              Not SignUp yet ! Please{" "}
+              <Link
+                href={"/signup"}
+                className=" font-bold p-2 rounded-md w-full hover:text-gray-500 hover:dark:text-gray-300 text-right underline"
+              >
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

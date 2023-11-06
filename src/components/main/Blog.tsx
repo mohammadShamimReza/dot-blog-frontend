@@ -16,7 +16,7 @@ function Blog({ blog }: { blog: IBlog }) {
             <Link href={`/blogs/${blog.id}`}>
               <h2
                 className="text-gray-800 mb-4 
-            dark:text-gray-300 text-xl font-semibold"
+            dark:text-gray-300 text-xl font-semibold overflow-clip"
               >
                 {blog.title}
               </h2>
