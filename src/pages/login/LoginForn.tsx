@@ -81,11 +81,12 @@ const LoginForm: React.FC = () => {
       const specificError = error as ErrorType;
 
       if (specificError.message === "user not found") {
-        // message.error("User not found. Please check your credentials.");
       } else {
-        // message.error(
-        //   "An error occurred while logging in. Please try again later."
-        // );
+        toast.error("server error", {
+          style: {
+            border: "1px solid black",
+          },
+        });
       }
     }
   };
