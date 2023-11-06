@@ -33,7 +33,6 @@ function SingleBlog() {
 
     try {
       const result = await createReview({ ...data }).unwrap();
-      console.log(result);
 
       reset({
         text: "",
@@ -43,7 +42,6 @@ function SingleBlog() {
     }
   };
 
-  // console.log(blogData?.user.profileImg);
 
   return (
     <div>

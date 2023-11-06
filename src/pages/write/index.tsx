@@ -68,7 +68,6 @@ function WriteForm() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      // console.log(files, files[0]);
       setSelectedImage(files[0]);
     } else {
       setSelectedImage(null);
@@ -84,14 +83,12 @@ function WriteForm() {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const image = data.thumbnailImg;
 
-    console.log(data);
     data.thumbnailImg = "";
     data.userId = id;
 
     try {
       const buildBlog = await createBlog(data);
 
-      console.log(buildBlog, isSuccess);
       buildBlog
         ? toast("Blog created successfully", {
             style: {
@@ -109,7 +106,6 @@ function WriteForm() {
       } else {
         console.error("An error occurred:", buildBlog.error);
       }
-      console.log(buildBlog);
     } catch (error) {
       console.log(error);
     }

@@ -47,7 +47,6 @@ function Blogs() {
     const { data: blogTypeDatas } = useTypesQuery({});
 
     const handleSearchTerm = (data: any) => {
-      console.log(data);
       setSearchTerm(data.searchTerm);
     };
 
@@ -59,7 +58,6 @@ function Blogs() {
       resolver: yupResolver(validationSchema),
     });
 
-    console.log(blogData);
 
     return (
       <div>

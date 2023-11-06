@@ -56,11 +56,8 @@ const SignupForm: React.FC = () => {
 
     data.role = "user";
 
-    console.log(data);
     try {
       const result = await createUser({ ...data }).unwrap();
-      //  message.loading("Creating User!");
-      console.log(result);
 
       reset({
         phone: "",

@@ -31,7 +31,6 @@ function NavBar() {
 
   const router = useRouter();
 
-  console.log(role, id);
 
   return (
     <nav

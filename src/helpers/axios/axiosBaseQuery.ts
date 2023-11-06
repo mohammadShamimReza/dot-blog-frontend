@@ -30,7 +30,7 @@ export const axiosBaseQuery =
         },
         withCredentials: true,
       });
-      // console.log(result, "axios instance error");
+
       return result;
     } catch (axiosError) {
       let err = axiosError as AxiosError;

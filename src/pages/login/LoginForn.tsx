@@ -43,7 +43,6 @@ const LoginForm: React.FC = () => {
       const res = await userLogin({ ...data }).unwrap();
       // message.loading("Logging!");
 
-      console.log(res.accessToken);
 
       if (res?.accessToken) {
         toast("Log In successfully", {
@@ -55,12 +54,9 @@ const LoginForm: React.FC = () => {
         storeUserInfo({ accessToken: res?.accessToken });
         const { role, id } = getUserInfo() as any;
         reset({ email: "", password: "" });
-        console.log(role);
         router.push(`/profile${id}`);
 
         setUser({ role: role, id: id });
-
-        console.log(user);
       } else {
         toast.error("Log In is not successfully", {
           style: {
