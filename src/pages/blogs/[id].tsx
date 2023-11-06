@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactElement } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { MdOutlineUnsubscribe } from "react-icons/md";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -48,7 +47,7 @@ function SingleBlog() {
 
   return (
     <div>
-      <div className="flex justify-between align-middle">
+      <div className="flex justify-end align-middle">
         <Link href={`/profile/${userId}`}>
           <div className="">
             <Image
@@ -63,9 +62,9 @@ function SingleBlog() {
           </div>
         </Link>
 
-        <div className="">
+        {/* <div className="">
           <br /> subscribe <MdOutlineUnsubscribe />
-        </div>
+        </div> */}
       </div>
       <br />
       <br />
@@ -77,7 +76,8 @@ function SingleBlog() {
         >
           {blogData?.title}
         </div>
-        <div className="flex justify-center align-middle">
+        <br />
+        <div className="flex ">
           {blogData?.content && (
             <div dangerouslySetInnerHTML={{ __html: blogData.content }} />
           )}
@@ -109,7 +109,7 @@ function SingleBlog() {
             render={({ field }) => (
               <textarea
                 {...field}
-                className="border rounded w-full py-2 px-3"
+                className="border rounded-xl w-full py-2 px-3"
               />
             )}
           />

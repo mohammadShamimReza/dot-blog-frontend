@@ -1,4 +1,6 @@
+import { getUserInfo } from "@/services/auth.service";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { SiGooglemessages } from "react-icons/si";
 import { TfiWrite } from "react-icons/tfi";
@@ -25,6 +27,12 @@ function NavBar() {
     };
   }, []);
 
+  const { role, id } = getUserInfo() as any;
+
+  const router = useRouter();
+
+  console.log(role, id);
+
   return (
     <nav
       id="navbar"
@@ -48,7 +56,7 @@ function NavBar() {
               </button>
             </Link>
 
-            <Link href="/write">
+            <Link href={!role ? "/login" : "/write"}>
               <button className="text-gray-600 dark:text-white flex items-center gap-2  p-2 rounded transition duration-300 transform hover:scale-110 cursor-pointer">
                 <TfiWrite />
                 Write

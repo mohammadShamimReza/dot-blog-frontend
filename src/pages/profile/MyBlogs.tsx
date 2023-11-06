@@ -2,7 +2,6 @@ import { IBlog } from "@/types";
 import Link from "next/link";
 
 function MyBlogs({ blog }: { blog: IBlog }) {
-  console.log(blog);
   return (
     <Link href={`/blogs/${blog?.id}`}>
       <div className="m-3 hover:shadow rounded dark:shadow-white">

@@ -1,80 +1,48 @@
-import { EditableField } from "@/components/Fields/EditableFields";
 import { useUsersByIdQuery } from "@/redux/api/userApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlog } from "@/types";
-import { ChangeEvent, ReactElement, useState } from "react";
-import {
-  AiFillGithub,
-  AiFillLinkedin,
-  AiOutlineEdit,
-  AiOutlineSave,
-} from "react-icons/ai";
+import Link from "next/link";
+import { ReactElement, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import Layout from "../../components/Layouts/Layout";
 import MyBlogs from "./MyBlogs";
 
 const ProfileData = () => {
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [isEditingJob, setIsEditingJob] = useState(false);
-  const [isEditingExperience, setIsEditingExperience] = useState(false);
-  const [isEditingLinkedIn, setIsEditingLinkedIn] = useState(false);
-  const [isEditingGitHub, setIsEditingGitHub] = useState(false);
+  const { control, handleSubmit, setValue, getValues } = useForm();
 
+  const [profileEditable, setProfileEditable] = useState(false);
   const { id, role, email } = getUserInfo() as any;
   const { data: userData, isLoading } = useUsersByIdQuery(id);
-
   const UserProfileData = userData;
 
-  const [name, setName] = useState("");
-
-  const [job, setJob] = useState("Software Engineer");
-  const [experience, setExperience] = useState(
-    "Software Engineer with 5+ years of experience in web development and software design. Proficient in JavaScript, React, Node.js, and more."
-  );
-  const [linkedin, setLinkedIn] = useState(
-    "https://www.linkedin.com/in/johndoe"
-  );
-  const [github, setGitHub] = useState("https://github.com/johndoe");
-
-  const handleSaveName = () => {
-    setIsEditingName(false);
+  const onSubmit = (data: any) => {
+    console.log(data);
+    setProfileEditable(false);
+    // Handle the form data, e.g., send it to the server
   };
 
-  const handleSaveJob = () => {
-    setIsEditingJob(false);
-  };
+  useEffect(() => {
+    if (UserProfileData) {
+      setValue("name", UserProfileData?.name);
+      setValue("designation", UserProfileData?.designation);
+      setValue("experience", UserProfileData?.experience);
+      setValue(
+        "linkedin",
+        !UserProfileData?.linkedIn
+          ? "https://www.linkedin.com/"
+          : UserProfileData?.linkedIn
+      );
+      setValue(
+        "github",
+        !UserProfileData?.github
+          ? "https://github.com"
+          : UserProfileData?.github
+      );
+    }
+  }, [UserProfileData, setValue]);
 
-  const handleSaveExperience = () => {
-    setIsEditingExperience(false);
-  };
-
-  const handleSaveLinkedIn = () => {
-    setIsEditingLinkedIn(false);
-  };
-
-  const handleSaveGitHub = () => {
-    setIsEditingGitHub(false);
-  };
-
-  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    // Removed HTMLTextAreaElement since it's not used
-    setName(e.target.value);
-  };
-
-  const handleChangeJob = (e: ChangeEvent<HTMLInputElement>) => {
-    setJob(e.target.value);
-  };
-
-  const handleChangeExperience = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setExperience(e.target.value);
-  };
-
-  const handleChangeLinkedIn = (e: ChangeEvent<HTMLInputElement>) => {
-    setLinkedIn(e.target.value);
-  };
-
-  const handleChangeGitHub = (e: ChangeEvent<HTMLInputElement>) => {
-    setGitHub(e.target.value);
-  };
+  console.log(UserProfileData, "this is linkedin");
 
   return (
     <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
@@ -85,73 +53,114 @@ const ProfileData = () => {
       />
       <div className="p-4 ">
         <div className="mb-2 text-2xl font-semibold flex gap-2 items-center">
-          {" "}
-          {/* Fixed "align-middle" to "items-center" */}
-          <EditableField
-            isEditing={isEditingName}
-            value={UserProfileData?.name}
-            onSave={handleSaveName}
-            onEdit={() => setIsEditingName(true)}
-            onChange={handleChangeName}
-          />
+          {profileEditable ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    className="font-semibold text-2xl"
+                  />
+                )}
+              />
+            </form>
+          ) : (
+            UserProfileData?.name
+          )}
         </div>
 
         <div className="mb-2 flex gap-2">
-          <EditableField
-            isEditing={isEditingJob}
-            value={UserProfileData?.designation}
-            onSave={handleSaveJob}
-            onEdit={() => setIsEditingJob(true)}
-            onChange={handleChangeJob}
-          />
+          {profileEditable ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="designation"
+                control={control}
+                render={({ field }) => <input {...field} type="text" />}
+              />
+            </form>
+          ) : (
+            UserProfileData?.designation
+          )}
         </div>
         <div className="mt-4">
           <p className="text-lg font-semibold  gap-2 flex">
             {" "}
             Experience
-            {!isEditingExperience ? (
-              <AiOutlineEdit
-                onClick={() => setIsEditingExperience(true)}
-                className="w-6 h-6 hover:cursor-pointer"
-              />
+            <br />
+            {profileEditable ? (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Controller
+                  name="experience"
+                  control={control}
+                  render={({ field }) => (
+                    <textarea {...field} rows={4} className="text-lg" />
+                  )}
+                />
+              </form>
             ) : (
-              <AiOutlineSave
-                onClick={handleSaveExperience}
-                className="w-6 h-6"
-              />
+              UserProfileData?.experience
             )}
           </p>
-          <div className=" mb-2 flex gap-2">
-            <EditableField
-              isEditing={isEditingExperience}
-              value={UserProfileData?.experience}
-              onChange={handleChangeExperience}
-              isTextArea={true}
-            />
-          </div>
         </div>
         <br />
-        <div className="mt-4">
-          <EditableField
-            isEditing={isEditingLinkedIn}
-            value={UserProfileData?.linkedIn}
-            onSave={handleSaveLinkedIn}
-            onEdit={() => setIsEditingLinkedIn(true)}
-            onChange={handleChangeLinkedIn}
-            icon={<AiFillLinkedin className="w-6 h-6 text-blue-500" />}
-            link={linkedin}
-          />
-          <EditableField
-            isEditing={isEditingGitHub}
-            value={UserProfileData?.github}
-            onSave={handleSaveGitHub}
-            onEdit={() => setIsEditingGitHub(true)}
-            onChange={handleChangeGitHub}
-            icon={
-              <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" /> /* Fixed the icon color */
-            }
-            link={github}
-          />
+        <div className="mt-4 flex">
+          {profileEditable ? (
+            // Input field for LinkedIn link
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="linkedin"
+                control={control}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="LinkedIn URL" />
+                )}
+              />
+            </form>
+          ) : (
+            <Link
+              href={UserProfileData?.linkedIn || "https://www.linkedin.com/"}
+            >
+              <AiFillLinkedin className="w-6 h-6 text-blue-500" />
+            </Link>
+          )}
+
+          {profileEditable ? (
+            // Input field for GitHub link
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="github"
+                control={control}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="GitHub URL" />
+                )}
+              />
+            </form>
+          ) : (
+            <Link href={UserProfileData?.github || "https://github.com"}>
+              <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" />
+            </Link>
+          )}
+        </div>
+        <div className="flex justify-end">
+          {profileEditable ? (
+            <button
+              onClick={handleSubmit(onSubmit)}
+              type="submit"
+              className="py-2 px-6 bg-gray-300 border rounded hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              onClick={() => setProfileEditable(!profileEditable)}
+              type="button"
+              className="py-2 px-6 bg-gray-300 border rounded hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+            >
+              Edit
+            </button>
+          )}
         </div>
       </div>
       <p className="text-center font-semibold text-lg">Blogs</p>

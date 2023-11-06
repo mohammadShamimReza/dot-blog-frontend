@@ -1,7 +1,6 @@
 import { IBlog } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { AiFillLike } from "react-icons/ai";
 
 function Blog({ blog }: { blog: IBlog }) {
   return (
@@ -30,7 +29,7 @@ function Blog({ blog }: { blog: IBlog }) {
               </p>
             </Link>
           </div>
-          <div className="flex items-center justify-between text-gray-600">
+          <div className="flex items-center justify-end text-gray-600">
             <Link href={"/profile/asdf"}>
               <div className="flex items-center">
                 <Image
@@ -40,17 +39,16 @@ function Blog({ blog }: { blog: IBlog }) {
                   alt="Writer"
                   className="flex w-8 h-8 rounded-full mr-2"
                 />
-
-                <span>Morsed Hasan</span>
               </div>
+              <span>Morsed Hasan</span>
             </Link>
-            <button
+            {/* <button
               className="flex items-center 
               isDarkMode  dark:text-gray-300"
             >
               <AiFillLike />
               500
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
