@@ -114,7 +114,7 @@ const ProfileData = () => {
           )}
         </div>
         <div className="mt-4">
-          <p className="   gap-2 ">
+          <p className="    ">
             {" "}
             <p className="text-lg font-semibold">Experience</p>
             {profileEditable ? (
@@ -139,7 +139,7 @@ const ProfileData = () => {
           </p>
         </div>
         <br />
-        <div className="mt-4 flex gap-3">
+        <div className={profileEditable ? "mt-4 " : "mt-4 flex gap-3"}>
           {profileEditable ? (
             // Input field for LinkedIn link
             <div className="">
@@ -196,13 +196,22 @@ const ProfileData = () => {
         </div>
         <div className="flex justify-end">
           {profileEditable ? (
-            <button
-              onClick={handleSubmit(onSubmit)}
-              type="submit"
-              className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
-            >
-              Save
-            </button>
+            <div className="">
+              <button
+                onClick={() => setProfileEditable(false)}
+                type="submit"
+                className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setProfileEditable(!profileEditable)}
+                type="button"
+                className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+              >
+                Save
+              </button>
+            </div>
           ) : (
             <button
               onClick={() => setProfileEditable(!profileEditable)}
@@ -214,7 +223,7 @@ const ProfileData = () => {
           )}
         </div>
       </div>
-      <p className="text-center font-semibold text-lg">Blogs</p>
+      <p className="text-center font-semibold text-lg">My Blogs</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center pt-10">
         {UserProfileData?.blogs.map((data: IBlog) => (
           <MyBlogs key={data.id} blog={data} />
