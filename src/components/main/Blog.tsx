@@ -1,8 +1,14 @@
+import { useUsersByIdQuery } from "@/redux/api/userApi";
 import { IBlog } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
 function Blog({ blog }: { blog: IBlog }) {
+  const { data: userData } = useUsersByIdQuery(blog?.userId);
+  if (userData) {
+    const { profileImg, name, updatedAt } = userData;
+  }
+  const updatedAt = new Date(userData?.updatedAt);
   return (
     <div className="">
       {" "}
@@ -29,18 +35,22 @@ function Blog({ blog }: { blog: IBlog }) {
               </p>
             </Link>
           </div>
-          <div className="flex items-center justify-end text-gray-600">
+          <div className="flex items-center justify-between text-gray-600">
+            <div className="">
+              Updated At <br /> {updatedAt.toLocaleString()}
+            </div>
+
             <Link href={"/profile/asdf"}>
               <div className="flex items-center">
                 <Image
-                  src={""}
+                  src={userData?.profileImg ? userData?.profileImg : ""}
                   height={2}
                   width={2}
                   alt="Writer"
                   className="flex w-8 h-8 rounded-full mr-2"
                 />
               </div>
-              <span>Morsed Hasan</span>
+              <span>{userData?.name}</span>
             </Link>
             {/* <button
               className="flex items-center 

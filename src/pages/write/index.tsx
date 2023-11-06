@@ -3,12 +3,12 @@ import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import * as yup from "yup";
 import Layout from "../../components/Layouts/Layout";
@@ -40,6 +40,8 @@ function WriteForm() {
   const blogtypes = blogTypes;
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const router = useRouter();
+  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
   const {
     register,
     control,
@@ -207,14 +209,6 @@ function WriteForm() {
 
         <div className="mb-4">
           <label className="block font-semibold mb-2">Content</label>
-          {/* <Controller
-            name="content"
-            control={control}
-            defaultValue=""
-            render={({ field }) =>
-              <Tiptap onChange={field.onChange} />
-            }
-          /> */}
 
           <ReactQuill
             className="h-72 "

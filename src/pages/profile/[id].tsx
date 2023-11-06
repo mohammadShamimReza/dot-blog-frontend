@@ -114,7 +114,7 @@ const ProfileData = () => {
           )}
         </div>
         <div className="mt-4">
-          <p className="    ">
+          <div className="    ">
             {" "}
             <p className="text-lg font-semibold">Experience</p>
             {profileEditable ? (
@@ -136,7 +136,7 @@ const ProfileData = () => {
             ) : (
               UserProfileData?.experience
             )}
-          </p>
+          </div>
         </div>
         <br />
         <div className={profileEditable ? "mt-4 " : "mt-4 flex gap-3"}>
