@@ -6,7 +6,7 @@ import { IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ReactElement, RefObject, useRef, useState } from "react";
+import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
@@ -45,8 +45,6 @@ function EditBlog() {
 
   const blogtypes = blogTypes;
 
-  console.log(blogData);
-
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const {
     register,
@@ -59,13 +57,21 @@ function EditBlog() {
   } = useForm<FormInputs>({
     resolver: yupResolver(schema) as any,
     mode: "onChange",
-    defaultValues: {
-      content: blogData?.content || "",
-      title: blogData?.title || "",
-      typeId: blogData?.typeId || "",
-      userId: blogData?.userId || "",
-    },
+    // defaultValues: {
+    //   content: blogData?.content || "",
+    //   title: blogData?.title || "",
+    //   typeId: blogData?.typeId || "",
+    //   userId: blogData?.userId || "",
+    // },
   });
+
+  useEffect(() => {
+    register("content");
+  }, [register]);
+
+  useEffect(() => {
+    setValue("content", valueEditor);
+  }, [setValue, valueEditor]);
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -88,11 +94,13 @@ function EditBlog() {
     const image = data.thumbnailImg;
 
     data.thumbnailImg = "";
-    data.userId = id;
+    data.userId = userId;
+
+    console.log(data);
 
     try {
       const buildBlog = await updateBlog({ id: id, body: data });
-
+      console.log(buildBlog);
       buildBlog
         ? toast("Blog created successfully", {
             style: {
