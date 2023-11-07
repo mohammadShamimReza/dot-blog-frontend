@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
+import { ReactElement, RefObject, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
@@ -66,9 +66,9 @@ function EditBlog() {
     },
   });
 
-  useEffect(() => {
-    register("content");
-  }, [register]);
+  // useEffect(() => {
+  //   register("content");
+  // }, [register]);
 
   const onEditorStateChange = (editorState: string) => {
     setValue("content", editorState);

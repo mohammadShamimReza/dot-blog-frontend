@@ -3,7 +3,6 @@ import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
@@ -12,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 import * as yup from "yup";
 import Layout from "../../components/Layouts/Layout";
+import QuillEditor from "./Quill";
 
 interface FormInputs {
   userId: string;
@@ -33,6 +33,43 @@ const schema = yup.object().shape({
   }),
 });
 
+const EmptyComponent = () => false;
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ color: [] }, { background: [] }],
+    [
+      { align: [] },
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image", "video", "code", "code-block"],
+    ["clean"],
+  ],
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "color",
+  "background",
+  "align",
+  "code",
+  "code-block",
+];
+
 function WriteForm() {
   const { data: blogTypes, error } = useTypesQuery({});
   const [createBlog, { data, isSuccess }] = useCreateBlogMutation();
@@ -40,7 +77,7 @@ function WriteForm() {
   const blogtypes = blogTypes;
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const router = useRouter();
-  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+  const [valueEditor, setValueEditor] = useState("");
 
   const {
     register,
@@ -50,6 +87,7 @@ function WriteForm() {
     formState: { errors },
     reset,
     setValue,
+    getValues,
   } = useForm<FormInputs>({
     resolver: yupResolver(schema) as any,
     mode: "onChange",
@@ -58,6 +96,12 @@ function WriteForm() {
   useEffect(() => {
     register("content");
   }, [register]);
+
+  useEffect(() => {
+    setValue("content", valueEditor);
+  }, [setValue, valueEditor]);
+
+  console.log(getValues("content"));
 
   const onEditorStateChange = (editorState: string) => {
     setValue("content", editorState);
@@ -87,6 +131,8 @@ function WriteForm() {
 
     data.thumbnailImg = "";
     data.userId = id;
+
+    console.log(data);
 
     try {
       const buildBlog = await createBlog(data);
@@ -210,11 +256,16 @@ function WriteForm() {
         <div className="mb-4">
           <label className="block font-semibold mb-2">Content</label>
 
-          <ReactQuill
+          {/* <ReactQuill
             className="h-72 "
             theme="snow"
             value={editorContent}
             onChange={onEditorStateChange}
+          /> */}
+
+          <QuillEditor
+            valueEditor={valueEditor}
+            setValueEditor={setValueEditor}
           />
 
           {errors.content && (
