@@ -4,7 +4,6 @@ import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, RefObject, useRef, useState } from "react";
@@ -12,6 +11,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 import * as yup from "yup";
+import QuillEditor from "../write/Quill";
 
 interface FormInputs {
   userId: string;
@@ -40,7 +40,8 @@ function EditBlog() {
   const [updateBlog, { data }] = useUpdateBlogMutation();
   const { id: userId } = getUserInfo() as any;
   const { data: blogTypes, error } = useTypesQuery({});
-  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
+  const [valueEditor, setValueEditor] = useState("");
 
   const blogtypes = blogTypes;
 
@@ -65,16 +66,6 @@ function EditBlog() {
       userId: blogData?.userId || "",
     },
   });
-
-  // useEffect(() => {
-  //   register("content");
-  // }, [register]);
-
-  const onEditorStateChange = (editorState: string) => {
-    setValue("content", editorState);
-  };
-
-  const editorContent = watch("content");
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -126,128 +117,126 @@ function EditBlog() {
 
   return (
     <div>
-      <div>
-        <Toaster />
-        {blogData ? (
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="rounded-lg overflow-hidden max-w-4xl mx-auto border border-gray-400 p-4"
-          >
-            <h2 className="text-3xl font-semibold mb-4">Update your Blog</h2>
-            <div className="mb-4">
-              <Controller
-                name="title"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600"
-                    placeholder="Title"
-                    required
-                    defaultValue={blogData?.title || ""}
-                  />
-                )}
-              />
-              <p>{errors.title?.message}</p>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="typeId" className="block mb-2">
-                Topic
-              </label>
-              <Controller
-                name="typeId"
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600"
-                    required
-                    defaultValue={blogData?.typeId || ""}
-                  >
-                    <option value="" disabled>
-                      Select a type
-                    </option>
-                    {blogtypes?.map((type: IBlogType) => (
-                      <option key={type?.id} value={type?.id}>
-                        {type.title}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              <p>{errors.typeId?.message}</p>
-            </div>
-            {selectedImage !== null && (
-              <div className="rounded-lg border">
-                <div className="p-4">
-                  <Image
-                    src={URL.createObjectURL(selectedImage)}
-                    alt="thumbnail image"
-                    height={859.2}
-                    width={144}
-                    // height={100}
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="mb-4">
-              <label htmlFor="thumbnailImg" className="py-3 block  font-bold">
-                Thumbnail Image
-              </label>
+      <Toaster />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="rounded-lg overflow-hidden max-w-4xl mx-auto border border-gray-400 p-4"
+      >
+        <h2 className="text-3xl font-semibold mb-4">Edit your Post</h2>
+        <div className="mb-4">
+          <Controller
+            name="title"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
               <input
-                type="file"
-                id="thumbnailImg"
-                name="thumbnailImg"
-                ref={fileInputRef}
-                className="border border-gray-300 p-2 rounded-lg "
-                onChange={handleImageChange}
-                defaultValue={blogData?.thumbnailImg || ""}
+                {...field}
+                type="text"
+                className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600 "
+                placeholder="Title"
+                required
               />
-              {selectedImage !== null && (
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
-                >
-                  Remove Image
-                </button>
-              )}
-
-              {errors.thumbnailImg && (
-                <p className="text-red-600">{errors.thumbnailImg.message}</p>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold mb-2">Content</label>
-
-              <ReactQuill
-                className="h-72 "
-                theme="snow"
-                value={editorContent}
-                onChange={onEditorStateChange}
-                defaultValue={blogData?.content || ""}
+            )}
+          />
+          <p>{errors.title?.message}</p>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="typeId" className="block mb-2">
+            Topic
+          </label>
+          <Controller
+            name="typeId"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <select
+                {...field}
+                className="w-full p-3 rounded-md focus:outline-none bg-gray-200 dark:bg-gray-600"
+                required
+              >
+                <option value="" disabled>
+                  Select a type
+                </option>
+                {blogtypes?.map((type: IBlogType) => (
+                  <option key={type?.id} value={type?.id}>
+                    {type.title}
+                  </option>
+                ))}
+                {/* Add more type options as needed */}
+              </select>
+            )}
+          />
+          <p>{errors.typeId?.message}</p>
+        </div>
+        {selectedImage !== null && (
+          <div className="rounded-lg border">
+            <div className="p-4">
+              <Image
+                src={URL.createObjectURL(selectedImage)}
+                alt="thumbnail image"
+                height={859.2}
+                width={144}
+                // height={100}
               />
-
-              {errors.content && (
-                <p className="text-red-600">{errors.content.message}</p>
-              )}
             </div>
-            <br />
-            <br />
-            <button
-              type="submit"
-              className="py-2 px-6 bg-gray-300 border rounded hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover:bg-slate-400 dark:text-blackr"
-            >
-              Publish
-            </button>
-          </form>
-        ) : (
-          <div className="">Loading data ..</div>
+          </div>
         )}
-      </div>
+
+        <div className="mb-4">
+          <label htmlFor="thumbnailImg" className="py-3 block  font-bold">
+            Thumbnail Image
+          </label>
+          <input
+            type="file"
+            id="thumbnailImg"
+            name="thumbnailImg"
+            ref={fileInputRef}
+            className="border border-gray-300 p-2 rounded-lg "
+            onChange={handleImageChange}
+          />
+          {selectedImage !== null && (
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+            >
+              Remove Image
+            </button>
+          )}
+
+          {errors.thumbnailImg && (
+            <p className="text-red-600">{errors.thumbnailImg.message}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-semibold mb-2">Content</label>
+
+          {/* <ReactQuill
+            className="h-72 "
+            theme="snow"
+            value={editorContent}
+            onChange={onEditorStateChange}
+          /> */}
+
+          <QuillEditor
+            valueEditor={valueEditor}
+            setValueEditor={setValueEditor}
+          />
+
+          {errors.content && (
+            <p className="text-red-600">{errors.content.message}</p>
+          )}
+        </div>
+        <br />
+        <br />
+        <button
+          type="submit"
+          className="py-2 px-6 bg-gray-300 border rounded hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover:bg-slate-400 dark:text-blackr"
+        >
+          Publish
+        </button>
+      </form>
     </div>
   );
 }

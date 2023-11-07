@@ -14,7 +14,13 @@ const modules = {
       { indent: "-1" },
       { indent: "+1" },
     ],
-    ["link", "image", "video", "code", "code-block"],
+    [
+      "link",
+      // "image",
+      // "video",
+      "code",
+      "code-block",
+    ],
     ["clean"],
   ],
 };
@@ -30,7 +36,7 @@ const formats = [
   "bullet",
   "indent",
   "link",
-  "image",
+  //   "image",
   "color",
   "background",
   "align",
@@ -59,9 +65,9 @@ export default function QuillEditor({
   setValueEditor: any;
 }) {
   return (
-    <div>
+    <div className="dark:text-white">
       <NextQuill
-        style={{ height: "200px" }}
+        style={{ height: "300px", borderRadius: "10px" }}
         modules={modules}
         formats={formats}
         onChange={(value: React.SetStateAction<string>) =>

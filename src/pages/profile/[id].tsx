@@ -60,174 +60,176 @@ const ProfileData = () => {
   }, [UserProfileData, setValue]);
 
   return (
-    <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
-      <Toaster />
-      <img
-        src="https://via.placeholder.com/150"
-        alt="Profile"
-        className="w-full h-96 object-cover"
-      />
-      <div className="p-4 ">
-        <div className="mb-2 text-2xl font-semibold flex gap-2 items-center">
-          {profileEditable ? (
-            <div className="">
-              <p className="text-2xl">Name</p>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Controller
-                  name="name"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      className="font-semibold text-2xl border dark:border-none rounded-lg"
-                    />
-                  )}
-                />
-              </form>
-            </div>
-          ) : (
-            UserProfileData?.name
-          )}
-        </div>
-
-        <div className="mb-2 flex gap-2">
-          {profileEditable ? (
-            <div className="">
-              <p>Designation</p>{" "}
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Controller
-                  name="designation"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      className="border dark:border-none rounded-lg"
-                    />
-                  )}
-                />
-              </form>
-            </div>
-          ) : (
-            UserProfileData?.designation
-          )}
-        </div>
-        <div className="mt-4">
-          <div className="    ">
-            {" "}
-            <p className="text-lg font-semibold">Experience</p>
+    <div className="">
+      <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
+        <Toaster />
+        <img
+          src="https://via.placeholder.com/150"
+          alt="Profile"
+          className="w-full h-96 object-cover"
+        />
+        <div className="p-4 ">
+          <div className="mb-2 text-2xl font-semibold flex gap-2 items-center">
             {profileEditable ? (
               <div className="">
+                <p className="text-2xl">Name</p>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Controller
-                    name="experience"
+                    name="name"
                     control={control}
                     render={({ field }) => (
-                      <textarea
+                      <input
                         {...field}
-                        rows={4}
-                        className=" border dark:border-none  rounded-lg"
+                        type="text"
+                        className="font-semibold text-2xl border dark:border-none rounded-lg"
                       />
                     )}
                   />
                 </form>
               </div>
             ) : (
-              UserProfileData?.experience
+              UserProfileData?.name
             )}
           </div>
-        </div>
-        <br />
-        <div className={profileEditable ? "mt-4 " : "mt-4 flex gap-3"}>
-          {profileEditable ? (
-            // Input field for LinkedIn link
-            <div className="">
+
+          <div className="mb-2 flex gap-2">
+            {profileEditable ? (
+              <div className="">
+                <p>Designation</p>{" "}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Controller
+                    name="designation"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="text"
+                        className="border dark:border-none rounded-lg"
+                      />
+                    )}
+                  />
+                </form>
+              </div>
+            ) : (
+              UserProfileData?.designation
+            )}
+          </div>
+          <div className="mt-4">
+            <div className="    ">
               {" "}
-              <AiFillLinkedin className="w-6 h-6 text-blue-500" />
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Controller
-                  name="linkedIn"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      placeholder="LinkedIn URL"
-                      className="border dark:border-none rounded-lg"
+              <p className="text-lg font-semibold">Experience</p>
+              {profileEditable ? (
+                <div className="">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Controller
+                      name="experience"
+                      control={control}
+                      render={({ field }) => (
+                        <textarea
+                          {...field}
+                          rows={4}
+                          className=" border dark:border-none  rounded-lg"
+                        />
+                      )}
                     />
-                  )}
-                />
-              </form>
+                  </form>
+                </div>
+              ) : (
+                UserProfileData?.experience
+              )}
             </div>
-          ) : (
-            <Link
-              href={UserProfileData?.linkedIn || "https://www.linkedin.com/"}
-            >
-              <AiFillLinkedin className="w-6 h-6 text-blue-500" />
-            </Link>
-          )}
-
-          {profileEditable ? (
-            // Input field for GitHub link
-            <div className="">
-              <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" />
-
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Controller
-                  name="github"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      placeholder="GitHub URL"
-                      className="border dark:border-none rounded-lg"
-                    />
-                  )}
-                />
-              </form>
-            </div>
-          ) : (
-            <Link href={UserProfileData?.github || "https://github.com"}>
-              <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" />
-            </Link>
-          )}
-        </div>
-        <div className="flex justify-end">
-          {profileEditable ? (
-            <div className="">
-              <button
-                onClick={() => setProfileEditable(false)}
-                type="submit"
-                className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+          </div>
+          <br />
+          <div className={profileEditable ? "mt-4 " : "mt-4 flex gap-3"}>
+            {profileEditable ? (
+              // Input field for LinkedIn link
+              <div className="">
+                {" "}
+                <AiFillLinkedin className="w-6 h-6 text-blue-500" />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Controller
+                    name="linkedIn"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="text"
+                        placeholder="LinkedIn URL"
+                        className="border dark:border-none rounded-lg"
+                      />
+                    )}
+                  />
+                </form>
+              </div>
+            ) : (
+              <Link
+                href={UserProfileData?.linkedIn || "https://www.linkedin.com/"}
               >
-                Cancel
-              </button>
+                <AiFillLinkedin className="w-6 h-6 text-blue-500" />
+              </Link>
+            )}
+
+            {profileEditable ? (
+              // Input field for GitHub link
+              <div className="">
+                <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" />
+
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Controller
+                    name="github"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="text"
+                        placeholder="GitHub URL"
+                        className="border dark:border-none rounded-lg"
+                      />
+                    )}
+                  />
+                </form>
+              </div>
+            ) : (
+              <Link href={UserProfileData?.github || "https://github.com"}>
+                <AiFillGithub className="w-6 h-6 text-gray-800 dark:text-white" />
+              </Link>
+            )}
+          </div>
+          <div className="flex justify-end ">
+            {profileEditable ? (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setProfileEditable(false)}
+                  type="submit"
+                  className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => setProfileEditable(!profileEditable)}
+                  type="button"
+                  className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+                >
+                  Save
+                </button>
+              </div>
+            ) : (
               <button
                 onClick={() => setProfileEditable(!profileEditable)}
                 type="button"
                 className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
               >
-                Save
+                Edit
               </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setProfileEditable(!profileEditable)}
-              type="button"
-              className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
-            >
-              Edit
-            </button>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-      <p className="text-center font-semibold text-lg">My Blogs</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center pt-10">
-        {UserProfileData?.blogs.map((data: IBlog) => (
-          <MyBlogs key={data.id} blog={data} />
-        ))}
+        <p className="text-center font-semibold text-lg">My Blogs</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center pt-10">
+          {UserProfileData?.blogs.map((data: IBlog) => (
+            <MyBlogs key={data.id} blog={data} />
+          ))}
+        </div>
       </div>
     </div>
   );

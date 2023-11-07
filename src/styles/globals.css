@@ -16,9 +16,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-.editor-height{
-    min-height: 300px;
+/* Custom CSS for the Quill toolbar */
+.custom-toolbar {
+  background-color: black;
+  color: white;
 }
 
+/* Apply custom styles to specific toolbar items */
+.custom-toolbar-item {
+  color: white;
+}
