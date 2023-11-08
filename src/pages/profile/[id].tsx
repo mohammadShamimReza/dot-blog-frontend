@@ -1,8 +1,10 @@
 import { useUpdateUserMutation, useUsersByIdQuery } from "@/redux/api/userApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlog } from "@/types";
+import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
@@ -11,14 +13,17 @@ import MyBlogs from "./MyBlogs";
 
 const ProfileData = () => {
   const { control, handleSubmit, setValue, getValues } = useForm();
-
+  const [profilePicEditable, setProfilePicEditable] = useState(true);
   const [profileEditable, setProfileEditable] = useState(false);
   const { id, role, email } = getUserInfo() as any;
   const { data: userData, isLoading } = useUsersByIdQuery(id);
   const UserProfileData = userData;
   const [updateUser, { data, isError }] = useUpdateUserMutation(id);
 
-  console.log(UserProfileData);
+  const [editProfileUrl, setEditProfileUrl] = useState(true);
+
+  // console.log(UserProfileData);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const onSubmit = async (data: any) => {
     try {
@@ -40,6 +45,7 @@ const ProfileData = () => {
     setProfileEditable(false);
     // Handle the form data, e.g., send it to the server
   };
+  const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
 
   useEffect(() => {
     if (UserProfileData) {
@@ -61,15 +67,155 @@ const ProfileData = () => {
     }
   }, [UserProfileData, setValue]);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setSelectedImage(files[0]);
+    } else {
+      setSelectedImage(null);
+    }
+  };
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleProfileChenge = async (e: any) => {
+    e.preventDefault();
+    setEditProfileUrl(false);
+    const formData = new FormData();
+    if (selectedImage) {
+      formData.append("file", selectedImage);
+      formData.append("upload_preset", "mwo5ydzk");
+    }
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dqwnzs85c/image/upload",
+        formData
+      );
+      console.log(response.data.secure_url);
+
+      try {
+        const result = await updateUser({
+          id: id,
+          body: {
+            profileImg: response.data.secure_url,
+          },
+        });
+        if (result) {
+          toast("Profile imgage update successfully", {
+            style: {
+              border: "1px solid black",
+            },
+          });
+        }
+      } catch (error) {
+        toast.error("server error", {
+          style: {
+            border: "1px solid black",
+          },
+        });
+      }
+      handleRemoveImage();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log(UserProfileData);
+
   return (
     <div className="">
       <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
         <Toaster />
-        <img
-          src="https://via.placeholder.com/150"
-          alt="Profile"
-          className="w-full h-96 object-cover"
-        />
+        {UserProfileData?.profileImg !== null && selectedImage === null && (
+          <div className="rounded-lg border ">
+            <div className="p-4 ">
+              <Image
+                src={UserProfileData?.profileImg}
+                alt="thumbnail image"
+                height={2}
+                width={2}
+                className=""
+                layout="responsive"
+              />
+            </div>
+          </div>
+        )}
+        {selectedImage !== null && (
+          <div className="rounded-lg border ">
+            <div className="p-4 ">
+              <Image
+                src={URL.createObjectURL(selectedImage)}
+                alt="thumbnail image"
+                height={2}
+                width={2}
+                className=""
+                layout="responsive"
+              />
+            </div>
+          </div>
+        )}
+        <div className=" mt-2">
+          <div className="mb-4">
+            {editProfileUrl !== true ? (
+              <div className="">
+                <label htmlFor="thumbnailImg" className="py-3 block  font-bold">
+                  Profile Image
+                </label>
+                <input
+                  type="file"
+                  id="thumbnailImg"
+                  name="thumbnailImg"
+                  ref={fileInputRef}
+                  className="border border-gray-300 p-2 rounded-lg "
+                  onChange={handleImageChange}
+                />
+                <button
+                  type="submit"
+                  onClick={() => setEditProfileUrl(true)}
+                  className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {selectedImage !== null && (
+              <button
+                type="submit"
+                onClick={handleProfileChenge}
+                className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+              >
+                Save Image
+              </button>
+            )}
+            {selectedImage !== null && (
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+              >
+                Remove Image
+              </button>
+            )}
+
+            {editProfileUrl === true && (
+              <button
+                type="button"
+                onClick={() => setEditProfileUrl(false)}
+                className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+              >
+                Add profile image
+              </button>
+            )}
+          </div>
+        </div>
         <div className="p-4 ">
           <div className="mb-2 text-2xl font-semibold flex gap-2 items-center">
             {profileEditable ? (
