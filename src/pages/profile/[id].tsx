@@ -125,7 +125,6 @@ const ProfileData = () => {
     }
   };
 
-  console.log(UserProfileData);
 
   return (
     <div className="">

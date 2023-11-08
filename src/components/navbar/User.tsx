@@ -1,14 +1,36 @@
 import { useUser } from "@/lib/UserProvider";
+import { useUsersByIdQuery } from "@/redux/api/userApi";
+import { getUserInfo } from "@/services/auth.service";
+import Image from "next/image";
 import Link from "next/link";
 import { RxAvatar } from "react-icons/rx";
 
 function User() {
   const { user, setUser } = useUser();
+  const { role, id } = getUserInfo() as any;
+  const { data: userData } = useUsersByIdQuery(id);
+  if (userData) {
+    const { profileImg, name, updatedAt } = userData;
+  }
+
+  console.log(role, id);
 
   return (
     <div>
       <div className="relative group">
-        <RxAvatar className="w-8 h-8" />
+        {user.role === "" ? (
+          <RxAvatar className="w-8 h-8" />
+        ) : (
+          <div className="flex items-center">
+            <Image
+              src={userData?.profileImg ? userData?.profileImg : ""}
+              height={2}
+              width={2}
+              alt="Writer"
+              className="flex w-8 h-8 rounded-full mr-2"
+            />
+          </div>
+        )}
 
         {user.role === "" && (
           <div className="absolute hidden  group-hover:block top-full right-2 space-y-2">

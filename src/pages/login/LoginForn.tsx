@@ -54,7 +54,7 @@ const LoginForm: React.FC = () => {
         storeUserInfo({ accessToken: res?.accessToken });
         const { role, id } = getUserInfo() as any;
         reset({ email: "", password: "" });
-        router.push(`/profile${id}`);
+        router.push(`/profile/${id}`);
 
         setUser({ role: role, id: id });
       } else {

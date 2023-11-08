@@ -40,7 +40,7 @@ function Blog({ blog }: { blog: IBlog }) {
               Updated At <br /> {updatedAt.toLocaleString()}
             </div>
 
-            <Link href={"/profile/asdf"}>
+            <Link href={`/profile/${userData?.id}`}>
               <div className="flex items-center">
                 <Image
                   src={userData?.profileImg ? userData?.profileImg : ""}

@@ -7,9 +7,11 @@ function Trendings() {
   const trendingBlog = trendingBlogs?.data;
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center ">
       <div className="my-4 w-full max-w-xl">
-        <p className="text-center text-xl font-semibold">Trending Blogs</p>
+        <p className="text-center text-xl font-semibold py-10">
+          Trending Blogs
+        </p>
         {trendingBlog?.map((blog: IBlog) => (
           <Link key={blog.id} href={`/blogs/${blog.id}`}>
             <div className="mb-4 hover:shadow-lg border rounded-lg dark:shadow-white">
