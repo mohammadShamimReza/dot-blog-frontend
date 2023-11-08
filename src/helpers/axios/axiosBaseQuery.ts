@@ -1,6 +1,6 @@
 import { IMeta } from "@/types";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
-import type { AxiosError, AxiosRequestConfig } from "axios";
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { instance as axiosInstance } from "./axiosInstance";
 
 export const axiosBaseQuery =
@@ -20,7 +20,7 @@ export const axiosBaseQuery =
   > =>
   async ({ url, method, data, params, contentType }) => {
     try {
-      const result = await axiosInstance({
+      const response = await axiosInstance({
         url: baseUrl + url,
         method,
         data,
@@ -31,7 +31,38 @@ export const axiosBaseQuery =
         withCredentials: true,
       });
 
-      return result;
+      // console.log(result);
+
+      // return result;
+
+      if (response.status >= 200 && response.status < 300) {
+        const result: AxiosResponse = {
+          data: response.data,
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+          config: response.config,
+        };
+        return result;
+      } else {
+        const error: AxiosError = {
+          response: response,
+          message: `Request failed with status ${response.status}`,
+          config: response.config,
+          isAxiosError: false,
+          name: "",
+          toJSON: function (): object {
+            return {
+              response: this.response,
+              message: this.message,
+              config: this.config,
+              // ... other properties
+            };
+          },
+        };
+
+        return { error };
+      }
     } catch (axiosError) {
       let err = axiosError as AxiosError;
       return {

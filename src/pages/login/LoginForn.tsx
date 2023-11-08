@@ -1,6 +1,5 @@
 import { useUser } from "@/lib/UserProvider";
 import { useUserLoginMutation } from "@/redux/api/authApi";
-import { getUserInfo, storeUserInfo } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -39,38 +38,37 @@ const LoginForm: React.FC = () => {
   });
 
   const handleLogin = async (data: any) => {
-     toast.loading("Logging ...", {
-       style: {
-         border: "1px solid black",
-       },
-       duration: 3000,
-     });
-    
+    toast.loading("Logging ...", {
+      style: {
+        border: "1px solid black",
+      },
+      duration: 3000,
+    });
+
     try {
-      const res = await userLogin({ ...data }).unwrap();
+      const res = await userLogin({ ...data });
+      console.log(res);
       // message.loading("Logging!");
+      // if (res?.accessToken) {
+      //   toast("Log In successfully", {
+      //     style: {
+      //       border: "1px solid black",
+      //     },
+      //   });
 
+      //   storeUserInfo({ accessToken: res?.accessToken });
+      //   const { role, id } = getUserInfo() as any;
+      //   reset({ email: "", password: "" });
+      //   router.push(`/profile/${id}`);
 
-      if (res?.accessToken) {
-        toast("Log In successfully", {
-          style: {
-            border: "1px solid black",
-          },
-        });
-
-        storeUserInfo({ accessToken: res?.accessToken });
-        const { role, id } = getUserInfo() as any;
-        reset({ email: "", password: "" });
-        router.push(`/profile/${id}`);
-
-        setUser({ role: role, id: id });
-      } else {
-        toast.error("Log In is not successfully", {
-          style: {
-            border: "1px solid black",
-          },
-        });
-      }
+      //   setUser({ role: role, id: id });
+      // } else {
+      //   toast.error("Log In is not successfully", {
+      //     style: {
+      //       border: "1px solid black",
+      //     },
+      //   });
+      // }
 
       if (res === undefined) {
         toast.error("User not found", {

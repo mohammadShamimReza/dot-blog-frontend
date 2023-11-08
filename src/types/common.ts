@@ -5,6 +5,7 @@ export interface IMeta {
 }
 
 export type ResponseSuccessType = {
+  status: number;
   data: any;
   meta?: IMeta;
 };
