@@ -190,13 +190,13 @@ function WriteForm() {
           <p>{errors.typeId?.message}</p>
         </div>
         {selectedImage !== null && (
-          <div className="rounded-lg border ">
+          <div className="rounded-lg border flex align-middle justify-center">
             <div className="p-4 ">
               <Image
                 src={URL.createObjectURL(selectedImage)}
                 alt="thumbnail image"
-                height={200}
-                width={200}
+                height={300}
+                width={300}
                 className=""
                 // layout="responsive"
               />

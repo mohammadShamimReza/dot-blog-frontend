@@ -4,6 +4,7 @@ import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
@@ -42,6 +43,7 @@ function EditBlog() {
   const { data: blogTypes, error } = useTypesQuery({});
 
   const [valueEditor, setValueEditor] = useState("");
+  const [thumbImgUrl, setThumbImgUrl] = useState("");
 
   const blogtypes = blogTypes;
 
@@ -91,12 +93,32 @@ function EditBlog() {
   };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    const image = data.thumbnailImg;
+    toast.loading("Creating blog ...", {
+      style: {
+        border: "1px solid black",
+      },
+      duration: 3000,
+    });
+    const formData = new FormData();
+    if (selectedImage) {
+      formData.append("file", selectedImage);
+      formData.append("upload_preset", "mwo5ydzk");
+    }
 
-    data.thumbnailImg = "";
-    data.userId = userId;
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dqwnzs85c/image/upload",
+        formData
+      );
+      setThumbImgUrl(response.data.secure_url);
+    } catch (error) {
+      console.error(error);
+    }
 
-    console.log(data);
+    // data.thumbnailImg = selectedImage;
+
+    data.thumbnailImg = thumbImgUrl;
+    data.userId = id;
 
     try {
       const buildBlog = await updateBlog({ id: id, body: data });
@@ -182,8 +204,8 @@ function EditBlog() {
               <Image
                 src={URL.createObjectURL(selectedImage)}
                 alt="thumbnail image"
-                height={859.2}
-                width={144}
+                height={300}
+                width={300}
                 // height={100}
               />
             </div>

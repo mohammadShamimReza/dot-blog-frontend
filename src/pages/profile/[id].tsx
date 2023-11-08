@@ -97,7 +97,7 @@ const ProfileData = () => {
       style: {
         border: "1px solid black",
       },
-      duration: 5000,
+      duration: 3000,
     });
     e.preventDefault();
     setEditProfileUrl(false);
@@ -164,27 +164,27 @@ const ProfileData = () => {
       <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
         <Toaster />
         {UserProfileData?.profileImg !== null && selectedImage === null && (
-          <div className="rounded-lg border ">
+          <div className="rounded-lg border flex justify-center align-middle">
             <div className="p-4 ">
               <Image
                 src={UserProfileData?.profileImg}
                 alt="thumbnail image"
-                height={2}
-                width={2}
+                height={300}
+                width={300}
                 className=""
-                layout="responsive"
+                // layout="responsive"
               />
             </div>
           </div>
         )}
         {selectedImage !== null && (
-          <div className="rounded-lg border ">
+          <div className="rounded-lg border flex justify-center align-middle">
             <div className="p-4 ">
               <Image
                 src={URL.createObjectURL(selectedImage)}
                 alt="thumbnail image"
-                height={2}
-                width={2}
+                height={70}
+                width={70}
                 className=""
                 layout="responsive"
               />
