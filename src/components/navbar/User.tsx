@@ -1,6 +1,7 @@
+import { authKey } from "@/constants/storageKey";
 import { useUser } from "@/lib/UserProvider";
 import { useUsersByIdQuery } from "@/redux/api/userApi";
-import { getUserInfo } from "@/services/auth.service";
+import { getUserInfo, removeUserInfo } from "@/services/auth.service";
 import Image from "next/image";
 import Link from "next/link";
 import { RxAvatar } from "react-icons/rx";
@@ -14,6 +15,10 @@ function User() {
   }
 
   console.log(role, id);
+
+  const handleLogout = () => {
+    setUser({ role: "", id: "" }), removeUserInfo(authKey);
+  };
 
   return (
     <div>
@@ -62,7 +67,10 @@ function User() {
             </div>
             <div className="">
               <Link href={"/signup"}>
-                <button className="w-20 rounded-lg flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800  hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300">
+                <button
+                  onClick={() => handleLogout()}
+                  className="w-20 rounded-lg flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800  hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300"
+                >
                   LouOut
                 </button>
               </Link>
