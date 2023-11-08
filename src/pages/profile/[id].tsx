@@ -26,7 +26,7 @@ const ProfileData = () => {
   const UserProfileData = userData;
   const [updateUser, { data, isError }] = useUpdateUserMutation(id);
 
-  const [editProfileUrl, setEditProfileUrl] = useState(true);
+  const [editProfileUrl, setEditProfileUrl] = useState(false);
 
   console.log(userId);
 
@@ -132,6 +132,13 @@ const ProfileData = () => {
       console.error(error);
     }
   };
+  useEffect(() => {
+    // This effect runs on the client side and ensures that the initial UI
+    // matches what's rendered on the server.
+    if (editProfileUrl === true) {
+      setEditProfileUrl(false);
+    }
+  }, [editProfileUrl]);
 
   console.log(UserProfileData);
 
@@ -183,8 +190,9 @@ const ProfileData = () => {
                   onChange={handleImageChange}
                 />
                 <button
-                  type="submit"
-                  onClick={() => setEditProfileUrl(true)}
+                  onClick={() => {
+                    setEditProfileUrl(true), setSelectedImage(null);
+                  }}
                   className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
                 >
                   Cancel
@@ -193,35 +201,33 @@ const ProfileData = () => {
             ) : (
               ""
             )}
+            <>
+              {selectedImage !== null && (
+                <button
+                  onClick={handleProfileChenge}
+                  className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+                >
+                  Save Image
+                </button>
+              )}
+              {selectedImage !== null && (
+                <button
+                  onClick={handleRemoveImage}
+                  className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+                >
+                  Remove Image
+                </button>
+              )}
 
-            {selectedImage !== null && (
-              <button
-                type="submit"
-                onClick={handleProfileChenge}
-                className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
-              >
-                Save Image
-              </button>
-            )}
-            {selectedImage !== null && (
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
-              >
-                Remove Image
-              </button>
-            )}
-
-            {editProfileUrl === true && id && (
-              <button
-                type="button"
-                onClick={() => setEditProfileUrl(false)}
-                className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
-              >
-                Add profile image
-              </button>
-            )}
+              {editProfileUrl === true && id && (
+                <button
+                  onClick={() => setEditProfileUrl(false)}
+                  className="ml-2 text-red-600 hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+                >
+                  Add profile image
+                </button>
+              )}
+            </>
           </div>
         </div>
         <div className="p-4 ">
@@ -272,7 +278,6 @@ const ProfileData = () => {
           </div>
           <div className="mt-4">
             <div className="    ">
-              {" "}
               <p className="text-lg font-semibold">Experience</p>
               {profileEditable ? (
                 <div className="">
@@ -352,7 +357,7 @@ const ProfileData = () => {
             )}
           </div>
           <div className="flex justify-end ">
-            {profileEditable && id ? (
+            {profileEditable ? (
               <div className="flex gap-2">
                 <button
                   onClick={() => setProfileEditable(false)}
@@ -362,23 +367,21 @@ const ProfileData = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={() => setProfileEditable(!profileEditable)}
+                  onClick={() => setProfileEditable(false)}
                   type="button"
                   className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
                 >
                   Save
                 </button>
               </div>
-            ) : id ? (
+            ) : (
               <button
-                onClick={() => setProfileEditable(!profileEditable)}
+                onClick={() => setProfileEditable(true)}
                 type="button"
                 className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
               >
                 Edit
               </button>
-            ) : (
-              ""
             )}
           </div>
         </div>

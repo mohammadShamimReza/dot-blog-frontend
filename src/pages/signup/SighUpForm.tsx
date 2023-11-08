@@ -81,7 +81,7 @@ const SignupForm: React.FC = () => {
         const { role, id } = getUserInfo() as any;
 
         setUser({ role: role, id: id });
-        router.push(`/profile${id}`);
+        router.push(`/profile/${id}`);
         if (result === undefined) {
           toast.error("User not found", {
             style: {

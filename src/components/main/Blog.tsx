@@ -2,13 +2,23 @@ import { useUsersByIdQuery } from "@/redux/api/userApi";
 import { IBlog } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function Blog({ blog }: { blog: IBlog }) {
   const { data: userData } = useUsersByIdQuery(blog?.userId);
-  if (userData) {
-    const { profileImg, name, updatedAt } = userData;
-  }
+
   const updatedAt = new Date(userData?.updatedAt);
+
+  if (!blog) {
+    return (
+      <div className="">
+        <Skeleton />
+        <Skeleton count={5} />
+      </div>
+    );
+  }
+
   return (
     <div className="">
       {" "}
