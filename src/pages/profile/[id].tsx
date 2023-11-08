@@ -4,6 +4,7 @@ import { IBlog } from "@/types";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -16,11 +17,18 @@ const ProfileData = () => {
   const [profilePicEditable, setProfilePicEditable] = useState(true);
   const [profileEditable, setProfileEditable] = useState(false);
   const { id, role, email } = getUserInfo() as any;
-  const { data: userData, isLoading } = useUsersByIdQuery(id);
+  const router = useRouter();
+  const { id: userId } = router.query;
+
+  const idForGetUser = id ? id : userId;
+
+  const { data: userData, isLoading } = useUsersByIdQuery(idForGetUser);
   const UserProfileData = userData;
   const [updateUser, { data, isError }] = useUpdateUserMutation(id);
 
   const [editProfileUrl, setEditProfileUrl] = useState(true);
+
+  console.log(userId);
 
   // console.log(UserProfileData);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -125,6 +133,7 @@ const ProfileData = () => {
     }
   };
 
+  console.log(UserProfileData);
 
   return (
     <div className="">
@@ -204,7 +213,7 @@ const ProfileData = () => {
               </button>
             )}
 
-            {editProfileUrl === true && (
+            {editProfileUrl === true && id && (
               <button
                 type="button"
                 onClick={() => setEditProfileUrl(false)}
@@ -343,7 +352,7 @@ const ProfileData = () => {
             )}
           </div>
           <div className="flex justify-end ">
-            {profileEditable ? (
+            {profileEditable && id ? (
               <div className="flex gap-2">
                 <button
                   onClick={() => setProfileEditable(false)}
@@ -360,7 +369,7 @@ const ProfileData = () => {
                   Save
                 </button>
               </div>
-            ) : (
+            ) : id ? (
               <button
                 onClick={() => setProfileEditable(!profileEditable)}
                 type="button"
@@ -368,13 +377,15 @@ const ProfileData = () => {
               >
                 Edit
               </button>
+            ) : (
+              ""
             )}
           </div>
         </div>
-        <p className="text-center font-semibold text-lg">My Blogs</p>
+        <p className="text-center font-semibold text-lg"> Blogs</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center pt-10">
           {UserProfileData?.blogs.map((data: IBlog) => (
-            <MyBlogs key={data.id} blog={data} />
+            <MyBlogs key={data.id} blog={data} id={id} />
           ))}
         </div>
       </div>

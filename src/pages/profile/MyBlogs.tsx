@@ -10,7 +10,7 @@ import {
   getPublicIdFromUrl,
 } from "./CloudinaryDelete";
 
-function MyBlogs({ blog }: { blog: IBlog }) {
+function MyBlogs({ blog, id }: { blog: IBlog; id: string }) {
   const [deleteBlog] = useDeleteBlogMutation();
 
   const router = useRouter();
@@ -76,21 +76,25 @@ function MyBlogs({ blog }: { blog: IBlog }) {
                 />
               )}
             </Link>
-            <div className="flex gap-1">
-              <Link
-                href={`/editBlog/${blog?.id}`}
-                className="py-1 px-1 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr w-1/2 text-center"
-              >
-                Edit
-              </Link>
-              <button
-                onClick={() => handleDeleteBlog(blog.id)}
-                type="button"
-                className="py-1 px-1 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr w-1/2"
-              >
-                Delete
-              </button>
-            </div>
+            {id ? (
+              <div className="flex gap-1">
+                <Link
+                  href={`/editBlog/${blog?.id}`}
+                  className="py-1 px-1 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr w-1/2 text-center"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => handleDeleteBlog(blog.id)}
+                  type="button"
+                  className="py-1 px-1 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr w-1/2"
+                >
+                  Delete
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
