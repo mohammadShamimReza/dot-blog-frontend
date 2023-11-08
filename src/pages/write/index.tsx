@@ -3,6 +3,7 @@ import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
 import { IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
@@ -25,8 +26,8 @@ const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   typeId: yup.string().required("type is required"),
   content: yup.string().required("Content is required"),
-  image: yup.mixed().test("file", "File is required", function (file) {
-    if (this.parent.image) {
+  thumbnailImg: yup.mixed().test("file", "File is required", function (file) {
+    if (this.parent.thumbnailImg) {
       return file !== null;
     }
     return true;
@@ -41,6 +42,7 @@ function WriteForm() {
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const router = useRouter();
   const [valueEditor, setValueEditor] = useState("");
+  const [thumbImgUrl, setThumbImgUrl] = useState("");
 
   const {
     register,
@@ -64,8 +66,6 @@ function WriteForm() {
     setValue("content", valueEditor);
   }, [setValue, valueEditor]);
 
-  console.log(getValues("content"));
-
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,12 +84,24 @@ function WriteForm() {
   };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    const image = data.thumbnailImg;
+    const formData = new FormData();
+    formData.append("file", selectedImage);
+    formData.append("upload_preset", "mwo5ydzk");
 
-    data.thumbnailImg = "";
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dqwnzs85c/image/upload",
+        formData
+      );
+      setThumbImgUrl(response.data.secure_url);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // data.thumbnailImg = selectedImage;
+
+    data.thumbnailImg = thumbImgUrl;
     data.userId = id;
-
-    console.log(data);
 
     try {
       const buildBlog = await createBlog(data);

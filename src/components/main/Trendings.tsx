@@ -6,41 +6,29 @@ function Trendings() {
   const { data: trendingBlogs } = useBlogQuery({ page: 1, limit: 3 });
   const trendingBlog = trendingBlogs?.data;
 
-
   return (
-    <div className="">
-      <br />
-      <hr />
-      <p className="py-10 text-center text-xl font-semibold">Treinding Blogs</p>
-
-      <hr />
-      {trendingBlog?.map((blog: IBlog) => (
-        <div key={blog.id} className="">
-          {" "}
-          <Link href={`/blogs/${blog.id}`}>
-            <div className="m-3 hover:shadow-lg border rounded-lg dark:shadow-white">
-              <div className="max-w-sm  overflow-hidden  ">
-                <div className="px-6 py-4 h-60">
-                  <div className="font-bold text-base mb-2 overflow-clip">
-                    {blog.title.split(" ").slice(0, 5).join(" ")}...
-                  </div>
-                  <hr />
-                  <div className="overflow-clip">
-                    {blog?.content && (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: blog.content.split(" ").slice(0, 8).join(" "),
-                        }}
-                      />
-                    )}
-                  </div>
-                  ...
+    <div className="flex flex-col items-center">
+      <div className="my-4 w-full max-w-xl">
+        <p className="text-center text-xl font-semibold">Trending Blogs</p>
+        {trendingBlog?.map((blog: IBlog) => (
+          <Link key={blog.id} href={`/blogs/${blog.id}`}>
+            <div className="mb-4 hover:shadow-lg border rounded-lg dark:shadow-white">
+              <div className="p-4">
+                <p className="font-bold text-lg truncate">{blog.title}</p>
+                <div className="mt-2 isDarkMode dark:text-gray-300 line-clamp-5  w-44">
+                  {blog?.content && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: blog.content,
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </div>
           </Link>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

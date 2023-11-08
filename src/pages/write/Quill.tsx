@@ -65,9 +65,13 @@ export default function QuillEditor({
   setValueEditor: any;
 }) {
   return (
-    <div className="dark:text-white">
+    <div className="">
       <NextQuill
-        style={{ height: "300px", borderRadius: "10px" }}
+        style={{
+          height: "300px",
+          backgroundColor: "white",
+          color: "black",
+        }}
         modules={modules}
         formats={formats}
         onChange={(value: React.SetStateAction<string>) =>

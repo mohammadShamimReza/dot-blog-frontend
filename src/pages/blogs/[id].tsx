@@ -43,6 +43,7 @@ function SingleBlog() {
   };
 
 
+
   return (
     <div>
       <div className="flex justify-end align-middle">
@@ -74,6 +75,17 @@ function SingleBlog() {
         >
           {blogData?.title}
         </div>
+        <br />
+        <div className="flex align-middle justify-center">
+          <Image
+            src={blogData?.thumbnailImg || ""}
+            height={200}
+            width={200}
+            alt="Writer"
+            className=""
+          />
+        </div>
+
         <br />
         <div className="flex ">
           {blogData?.content && (
