@@ -42,8 +42,6 @@ function SingleBlog() {
     }
   };
 
-
-
   return (
     <div>
       <div className="flex justify-end align-middle">

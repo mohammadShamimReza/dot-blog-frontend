@@ -51,6 +51,12 @@ const SignupForm: React.FC = () => {
     });
 
   const handleSignup = async (data: any) => {
+    toast.loading("Signing ....", {
+      style: {
+        border: "1px solid black",
+      },
+      duration: 3000,
+    });
     delete data.terms;
     delete data.repassword;
 
@@ -89,6 +95,15 @@ const SignupForm: React.FC = () => {
             },
           });
         }
+      }
+
+      if (!result?.accessToken) {
+        toast.error("Sign Up no successfull please try again", {
+          style: {
+            border: "1px solid black",
+          },
+          duration: 3000,
+        });
       }
     } catch (err: any) {
       toast.error("server error", {
@@ -131,7 +146,9 @@ const SignupForm: React.FC = () => {
               )}
             </div>
             <div>
-              <label className="block text-sm text-gray-600">designation</label>
+              <label className="block text-sm text-gray-600">
+                Work Designation
+              </label>
               <Controller
                 name="designation"
                 control={control}
@@ -150,7 +167,9 @@ const SignupForm: React.FC = () => {
               )}
             </div>
             <div>
-              <label className="block text-sm text-gray-600">experience</label>
+              <label className="block text-sm text-gray-600">
+                Work Experience
+              </label>
               <Controller
                 name="experience"
                 control={control}

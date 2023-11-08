@@ -39,6 +39,13 @@ const LoginForm: React.FC = () => {
   });
 
   const handleLogin = async (data: any) => {
+     toast.loading("Logging ...", {
+       style: {
+         border: "1px solid black",
+       },
+       duration: 3000,
+     });
+    
     try {
       const res = await userLogin({ ...data }).unwrap();
       // message.loading("Logging!");

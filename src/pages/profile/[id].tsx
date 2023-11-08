@@ -9,6 +9,8 @@ import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import Layout from "../../components/Layouts/Layout";
 import MyBlogs from "./MyBlogs";
 
@@ -91,6 +93,12 @@ const ProfileData = () => {
   };
 
   const handleProfileChenge = async (e: any) => {
+    toast.loading("Updating profile picture ...", {
+      style: {
+        border: "1px solid black",
+      },
+      duration: 5000,
+    });
     e.preventDefault();
     setEditProfileUrl(false);
     const formData = new FormData();
@@ -141,6 +149,15 @@ const ProfileData = () => {
   }, [editProfileUrl]);
 
   console.log(UserProfileData);
+
+  if (!UserProfileData) {
+    return (
+      <div className="">
+        <Skeleton />
+        <Skeleton count={5} />
+      </div>
+    );
+  }
 
   return (
     <div className="">
@@ -265,7 +282,7 @@ const ProfileData = () => {
           <div className="mb-2 flex gap-2">
             {profileEditable ? (
               <div className="">
-                <p>Designation</p>{" "}
+                <p>Work Designation</p>{" "}
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Controller
                     name="designation"

@@ -84,6 +84,12 @@ function WriteForm() {
   };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+     toast.loading("Creating blog ...", {
+       style: {
+         border: "1px solid black",
+       },
+       duration: 3000,
+     });
     const formData = new FormData();
     if (selectedImage) {
       formData.append("file", selectedImage);
