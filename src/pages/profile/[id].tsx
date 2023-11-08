@@ -18,6 +18,8 @@ const ProfileData = () => {
   const UserProfileData = userData;
   const [updateUser, { data, isError }] = useUpdateUserMutation(id);
 
+  console.log(UserProfileData);
+
   const onSubmit = async (data: any) => {
     try {
       const result = await updateUser({ id: id, body: data });

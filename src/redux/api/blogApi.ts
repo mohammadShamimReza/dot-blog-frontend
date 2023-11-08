@@ -43,6 +43,7 @@ export const blogApi = baseApi.injectEndpoints({
       },
 
       providesTags: [
+        tagTypes.admin,
         tagTypes.package,
         tagTypes.bookPackage,
         tagTypes.packageReviewRating,
@@ -56,6 +57,7 @@ export const blogApi = baseApi.injectEndpoints({
         };
       },
       invalidatesTags: [
+        tagTypes.admin,
         tagTypes.package,
         tagTypes.bookPackage,
         tagTypes.packageReviewRating,

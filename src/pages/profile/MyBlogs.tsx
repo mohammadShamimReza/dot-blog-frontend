@@ -1,17 +1,50 @@
 import { useDeleteBlogMutation } from "@/redux/api/blogApi";
 import { IBlog } from "@/types";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  generateSHA1,
+  generateSignature,
+  getPublicIdFromUrl,
+} from "./CloudinaryDelete";
 
 function MyBlogs({ blog }: { blog: IBlog }) {
   const [deleteBlog] = useDeleteBlogMutation();
 
   const router = useRouter();
 
+  const publicId = getPublicIdFromUrl(blog.thumbnailImg as string);
+
+  const handleDeleteImage = async (publicId: string) => {
+    const cloudName = "dqwnzs85c";
+    const timestamp = new Date().getTime();
+    const apiKey = "936143453712422";
+    const apiSecret = "J-wz1hk3ROvWX32COiQhh0yA46M";
+    const signature = generateSHA1(generateSignature(publicId, apiSecret));
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
+
+    try {
+      const response = await axios.post(url, {
+        public_id: publicId,
+        signature: signature,
+        api_key: apiKey,
+        timestamp: timestamp,
+      });
+
+      console.error("ok");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDeleteBlog = async (id: string) => {
+    handleDeleteImage(publicId as string);
     try {
       const result = await deleteBlog(id);
+
+      console.log(result);
       if (result) {
         toast("Blog deleted successfully", {
           style: {

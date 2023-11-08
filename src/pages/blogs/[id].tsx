@@ -76,13 +76,14 @@ function SingleBlog() {
           {blogData?.title}
         </div>
         <br />
-        <div className="flex align-middle justify-center">
+        <div className="flex align-middle justify-center h-80 ">
           <Image
             src={blogData?.thumbnailImg || ""}
             height={200}
             width={200}
             alt="Writer"
-            className=""
+            className=" rounded-lg"
+            layout="responsive"
           />
         </div>
 

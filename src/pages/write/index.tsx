@@ -85,8 +85,10 @@ function WriteForm() {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const formData = new FormData();
-    formData.append("file", selectedImage);
-    formData.append("upload_preset", "mwo5ydzk");
+    if (selectedImage) {
+      formData.append("file", selectedImage);
+      formData.append("upload_preset", "mwo5ydzk");
+    }
 
     try {
       const response = await axios.post(
@@ -182,14 +184,15 @@ function WriteForm() {
           <p>{errors.typeId?.message}</p>
         </div>
         {selectedImage !== null && (
-          <div className="rounded-lg border">
-            <div className="p-4">
+          <div className="rounded-lg border ">
+            <div className="p-4 ">
               <Image
                 src={URL.createObjectURL(selectedImage)}
                 alt="thumbnail image"
-                height={859.2}
-                width={144}
-                // height={100}
+                height={200}
+                width={200}
+                className=""
+                // layout="responsive"
               />
             </div>
           </div>

@@ -13,7 +13,12 @@ export const usersApi = baseApi.injectEndpoints({
         };
       },
 
-      providesTags: [tagTypes.admin],
+      providesTags: [
+        tagTypes.admin,
+        tagTypes.package,
+        tagTypes.bookPackage,
+        tagTypes.packageReviewRating,
+      ],
     }),
     usersById: build.query({
       query: (id: string) => {
