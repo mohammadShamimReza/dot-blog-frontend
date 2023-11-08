@@ -176,31 +176,39 @@ const ProfileData = () => {
         )}
         <div className=" mt-2">
           <div className="mb-4">
-            {editProfileUrl !== true ? (
-              <div className="">
-                <label htmlFor="thumbnailImg" className="py-3 block  font-bold">
-                  Profile Image
-                </label>
-                <input
-                  type="file"
-                  id="thumbnailImg"
-                  name="thumbnailImg"
-                  ref={fileInputRef}
-                  className="border border-gray-300 p-2 rounded-lg "
-                  onChange={handleImageChange}
-                />
-                <button
-                  onClick={() => {
-                    setEditProfileUrl(true), setSelectedImage(null);
-                  }}
-                  className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
-                >
-                  Cancel
-                </button>
-              </div>
+            {id ? (
+              !editProfileUrl ? (
+                <div className="">
+                  <label
+                    htmlFor="thumbnailImg"
+                    className="py-3 block  font-bold"
+                  >
+                    Profile Image
+                  </label>
+                  <input
+                    type="file"
+                    id="thumbnailImg"
+                    name="thumbnailImg"
+                    ref={fileInputRef}
+                    className="border border-gray-300 p-2 rounded-lg "
+                    onChange={handleImageChange}
+                  />
+                  <button
+                    onClick={() => {
+                      setEditProfileUrl(true), setSelectedImage(null);
+                    }}
+                    className="ml-2  hover:underline py-2 px-3 rounded-lg focus:outline-none focus:ring border"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                ""
+              )
             ) : (
               ""
             )}
+
             <>
               {selectedImage !== null && (
                 <button
@@ -358,30 +366,34 @@ const ProfileData = () => {
           </div>
           <div className="flex justify-end ">
             {profileEditable ? (
-              <div className="flex gap-2">
+              id ? (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setProfileEditable(false)}
+                    type="submit"
+                    className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => setProfileEditable(false)}
+                    type="button"
+                    className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+                  >
+                    Save
+                  </button>
+                </div>
+              ) : (
                 <button
-                  onClick={() => setProfileEditable(false)}
-                  type="submit"
-                  className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setProfileEditable(false)}
+                  onClick={() => setProfileEditable(true)}
                   type="button"
                   className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
                 >
-                  Save
+                  Edit
                 </button>
-              </div>
+              )
             ) : (
-              <button
-                onClick={() => setProfileEditable(true)}
-                type="button"
-                className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
-              >
-                Edit
-              </button>
+              ""
             )}
           </div>
         </div>
