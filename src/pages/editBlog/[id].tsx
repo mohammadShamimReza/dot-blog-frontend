@@ -22,6 +22,14 @@ interface FormInputs {
   thumbnailImg: File | null | string;
 }
 
+interface ErrorType {
+  response: {
+    statusCode: number;
+    message: string;
+    errorMessages: string;
+  };
+}
+
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   typeId: yup.string().required("type is required"),
@@ -121,27 +129,34 @@ function EditBlog() {
     data.userId = id;
 
     try {
-      const buildBlog = await updateBlog({ id: id, body: data });
+      const buildBlog = await updateBlog({ id: id, body: data }).unwrap();
       console.log(buildBlog);
-      buildBlog
-        ? toast("Blog created successfully", {
-            style: {
-              border: "1px solid black",
-            },
-          })
-        : toast("Blog not created successfully");
-      reset({ thumbnailImg: "", title: "", typeId: "" });
-      handleRemoveImage();
 
-      if ("data" in buildBlog) {
-        // Handle the success case
-        const blogId = buildBlog.data!.id;
-        router.push(`/blogs/${blogId}`);
+      const resultBuildBlog = buildBlog?.data;
+      if (buildBlog.status === 200) {
+        toast("Blog created successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
+        reset({ thumbnailImg: "", title: "", typeId: "" });
+        handleRemoveImage();
+        router.push(`/blogs/${resultBuildBlog?.id}`);
       } else {
-        console.error("An error occurred:", buildBlog.error);
+        toast.error("Blog id not successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      const specificError = error as ErrorType;
+      const logError = specificError?.response;
+      toast.error(logError.errorMessages, {
+        style: {
+          border: "1px solid black",
+        },
+      });
     }
   };
 
