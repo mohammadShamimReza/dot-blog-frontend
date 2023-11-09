@@ -12,7 +12,7 @@ function Main() {
     typeId: type,
     searchTerm: searchTerm,
   });
-  const blogData = blogDatas;
+  const blogData = blogDatas?.data;
   const { data: blogTypeDatas } = useTypesQuery({});
 
   return (
@@ -20,7 +20,7 @@ function Main() {
       <div className="">
         <div className="flex sm:flex-row-reverse flex-col justify-between  gap-3">
           <div className="sm:w-1/5  flex flex-row sm:flex-col flex-wrap ">
-            {blogTypeDatas?.map((blogType: IBlogType) => (
+            {blogTypeDatas?.data?.map((blogType: IBlogType) => (
               <div key={blogType?.id} className="  ">
                 <div className="p-3">
                   <button

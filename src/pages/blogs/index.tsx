@@ -43,7 +43,7 @@ function Blogs() {
     searchTerm: searchTerm,
     page: pageCount,
   });
-  const blogData = blogDatas;
+  const blogData = blogDatas?.data;
   const { data: blogTypeDatas } = useTypesQuery({});
 
   const handleSearchTerm = (data: any) => {
@@ -72,7 +72,7 @@ function Blogs() {
       <div className="">
         <div className="flex sm:flex-row-reverse flex-col justify-between  gap-3 ">
           <div className="sm:w-1/5 sm:pt-28 pt-0 flex flex-row sm:flex-col flex-wrap ">
-            {blogTypeDatas?.map((blogType: IBlogType) => (
+            {blogTypeDatas?.data?.map((blogType: IBlogType) => (
               <div key={blogType?.id} className="  ">
                 <div className="p-3">
                   <button
@@ -80,8 +80,8 @@ function Blogs() {
                     onDoubleClick={() => setType(undefined)}
                     className={
                       type === blogType?.id
-                        ? "light:bg-transparent hover:light:bg-gray-300 hover:dark:bg-gray-700 light:text-gray-700   border border-gray-500 rounded-lg hover:light:shadow-lg hover:dark:shadow-lg transition duration-300 hover:scale-110 bg-gray-500 text-white dark:bg-gray-200 dark:text-black w-full "
-                        : "light:bg-transparent dark:bg-gray-800 hover:light:bg-gray-300 hover:dark:bg-gray-700 light:text-gray-700 dark:text-gray-300 p-1 border border-gray-500 rounded-lg hover:light:shadow-lg hover:dark:shadow-lg transition duration-300 hover:scale-110  w-full"
+                        ? "light:bg-transparent hover:light:bg-gray-300 hover:dark:bg-gray-300 light:text-gray-700    border border-gray-500 rounded-lg hover:light:shadow-lg hover:dark:shadow-lg transition duration-300 hover:scale-110 bg-gray-500 text-white dark:bg-gray-200 dark:text-black w-full "
+                        : "light:bg-transparent dark:bg-gray-800 hover:light:bg-gray-300 hover:dark:bg-gray-300 light:text-gray-700 dark:text-white p-1 border border-gray-500 rounded-lg dark:hover:text-black hover:light:shadow-lg hover:dark:shadow-lg transition duration-300 hover:scale-110  w-full"
                     }
                   >
                     {blogType?.title}

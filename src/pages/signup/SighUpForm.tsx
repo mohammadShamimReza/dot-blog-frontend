@@ -11,11 +11,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import * as yup from "yup";
 
 interface SignupFormProps {
   onSubmit: (data: any) => void;
+}
+
+interface ErrorType {
+  response: {
+    statusCode: number;
+    message: string;
+    errorMessages: string;
+  };
 }
 
 const SignupForm: React.FC = () => {
@@ -65,18 +73,9 @@ const SignupForm: React.FC = () => {
     try {
       const result = await createUser({ ...data }).unwrap();
 
-      reset({
-        phone: "",
-        password: "",
-        email: "",
-        name: "",
-        designation: "",
-        experience: "",
-        repassword: "",
-        terms: false,
-      });
+      console.log(result);
 
-      if (result?.accessToken) {
+      if (result?.data?.accessToken) {
         toast("Sign Up successfully", {
           style: {
             border: "1px solid black",
@@ -88,35 +87,39 @@ const SignupForm: React.FC = () => {
 
         setUser({ role: role, id: id });
         router.push(`/profile/${id}`);
-        if (result === undefined) {
-          toast.error("User not found", {
-            style: {
-              border: "1px solid black",
-            },
-          });
-        }
-      }
 
-      if (!result?.accessToken) {
-        toast.error("Sign Up no successfull please try again", {
+        reset({
+          phone: "",
+          password: "",
+          email: "",
+          name: "",
+          designation: "",
+          experience: "",
+          repassword: "",
+          terms: false,
+        });
+      } else {
+        toast.error("Signup is not successfully", {
           style: {
             border: "1px solid black",
           },
-          duration: 3000,
         });
       }
-    } catch (err: any) {
-      toast.error("server error", {
-        style: {
-          border: "1px solid black",
-        },
-      });
+    } catch (error) {
+      const specificError = error as ErrorType;
+      const logError = specificError?.response;
+      toast.error(
+        `${logError?.errorMessages} email or number already been used`,
+        {
+          style: {
+            border: "1px solid black",
+          },
+        }
+      );
     }
   };
 
   const { errors } = formState;
-
-  const isSubmitDisabled = errors.terms || formState.isSubmitting;
 
   const toggleTermsCheckbox = () => {
     setValue("terms", !watch("terms"));
@@ -124,6 +127,8 @@ const SignupForm: React.FC = () => {
 
   return (
     <>
+      <Toaster />
+
       <div className="min-h-screen flex items-center justify-center">
         <div className="w-full max-w-md m-auto p-6  rounded-lg border mb-40">
           <h1 className="text-2xl text-center mb-4 font-semibold ">Sign Up</h1>
@@ -285,10 +290,8 @@ const SignupForm: React.FC = () => {
             <div>
               <button
                 type="submit"
-                className={`${
-                  isSubmitDisabled ? "bg-gray-300 cursor-not-allowed" : ""
-                }  bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400`}
-                disabled={isSubmitDisabled as boolean}
+                className={` bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400`}
+                // disabled={isSubmitDisabled as boolean}
               >
                 Sign Up
               </button>

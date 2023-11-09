@@ -25,7 +25,7 @@ const ProfileData = () => {
   const idForGetUser = id ? id : userId;
 
   const { data: userData, isLoading } = useUsersByIdQuery(idForGetUser);
-  const UserProfileData = userData;
+  const UserProfileData = userData?.data;
   const [updateUser, { data, isError }] = useUpdateUserMutation(id);
 
   const [editProfileUrl, setEditProfileUrl] = useState(false);

@@ -43,25 +43,15 @@ export const axiosBaseQuery =
           headers: response.headers,
           config: response.config,
         };
-        return result;
+        return { data: result };
       } else {
-        const error: AxiosError = {
+        const errorData = {
+          // status: response.status,
+          // data: response.data,
           response: response,
-          message: `Request failed with status ${response.status}`,
-          config: response.config,
-          isAxiosError: false,
-          name: "",
-          toJSON: function (): object {
-            return {
-              response: this.response,
-              message: this.message,
-              config: this.config,
-              // ... other properties
-            };
-          },
         };
 
-        return { error };
+        return { error: errorData };
       }
     } catch (axiosError) {
       let err = axiosError as AxiosError;

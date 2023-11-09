@@ -12,7 +12,7 @@ function Trendings() {
         <p className="text-center text-xl font-semibold py-10">
           Trending Blogs
         </p>
-        {trendingBlog?.map((blog: IBlog) => (
+        {trendingBlog?.data?.map((blog: IBlog) => (
           <Link key={blog.id} href={`/blogs/${blog.id}`}>
             <div className="mb-4 hover:shadow-lg border rounded-lg dark:shadow-white">
               <div className="p-4">

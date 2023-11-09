@@ -1,5 +1,6 @@
 import { useUser } from "@/lib/UserProvider";
 import { useUserLoginMutation } from "@/redux/api/authApi";
+import { getUserInfo, storeUserInfo } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,9 +19,11 @@ type LoinFormValue = {
 };
 
 interface ErrorType {
-  statusCode: number;
-  message: string;
-  errorMessages: string;
+  response: {
+    statusCode: number;
+    message: string;
+    errorMessages: string;
+  };
 }
 
 const LoginForm: React.FC = () => {
@@ -46,49 +49,38 @@ const LoginForm: React.FC = () => {
     });
 
     try {
-      const res = await userLogin({ ...data });
+      const res = await userLogin({ ...data }).unwrap();
+
       console.log(res);
-      // message.loading("Logging!");
-      // if (res?.accessToken) {
-      //   toast("Log In successfully", {
-      //     style: {
-      //       border: "1px solid black",
-      //     },
-      //   });
 
-      //   storeUserInfo({ accessToken: res?.accessToken });
-      //   const { role, id } = getUserInfo() as any;
-      //   reset({ email: "", password: "" });
-      //   router.push(`/profile/${id}`);
+      if (res?.data?.accessToken) {
+        toast("Log In successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
 
-      //   setUser({ role: role, id: id });
-      // } else {
-      //   toast.error("Log In is not successfully", {
-      //     style: {
-      //       border: "1px solid black",
-      //     },
-      //   });
-      // }
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        const { role, id } = getUserInfo() as any;
+        reset({ email: "", password: "" });
+        router.push(`/profile/${id}`);
 
-      if (res === undefined) {
-        toast.error("User not found", {
+        setUser({ role: role, id: id });
+      } else {
+        toast.error("Log In is not successfully", {
           style: {
             border: "1px solid black",
           },
         });
       }
     } catch (error) {
-      console.error(error);
       const specificError = error as ErrorType;
-
-      if (specificError.message === "user not found") {
-      } else {
-        toast.error("server error", {
-          style: {
-            border: "1px solid black",
-          },
-        });
-      }
+      const logError = specificError?.response;
+      toast.error(logError.errorMessages, {
+        style: {
+          border: "1px solid black",
+        },
+      });
     }
   };
 

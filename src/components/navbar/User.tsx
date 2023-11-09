@@ -14,7 +14,6 @@ function User() {
     const { profileImg, name, updatedAt } = userData;
   }
 
-  console.log(role, id);
 
   const handleLogout = () => {
     setUser({ role: "", id: "" }), removeUserInfo(authKey);
@@ -47,7 +46,7 @@ function User() {
               </Link>
             </div>
             <div className="">
-              <Link href={"/"}>
+              <Link href={"/signup"}>
                 <button className="w-20 rounded-lg flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800  hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300">
                   SignUp
                 </button>
