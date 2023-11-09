@@ -8,7 +8,7 @@ import {
   generateSHA1,
   generateSignature,
   getPublicIdFromUrl,
-} from "./CloudinaryDelete";
+} from "../../hooks/cloudinary/CloudinaryDelete";
 
 function MyBlogs({ blog, id }: { blog: IBlog; id: string }) {
   const [deleteBlog] = useDeleteBlogMutation();
