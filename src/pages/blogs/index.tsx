@@ -1,10 +1,9 @@
-import Layout from "@/components/Layouts/Layout";
 import Blog from "@/components/main/Blog";
 import { useBlogQuery } from "@/redux/api/blogApi";
 import { useTypesQuery } from "@/redux/api/typeApi";
 import { IBlog, IBlogType } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -236,7 +235,3 @@ function Blogs() {
 }
 
 export default Blogs;
-
-Blogs.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

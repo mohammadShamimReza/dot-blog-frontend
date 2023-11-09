@@ -6,12 +6,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 import * as yup from "yup";
-import Layout from "../../components/Layouts/Layout";
 import QuillEditor from "./Quill";
 
 interface FormInputs {
@@ -278,7 +277,3 @@ function WriteForm() {
 }
 
 export default WriteForm;
-
-WriteForm.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

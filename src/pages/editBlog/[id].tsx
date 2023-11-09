@@ -1,4 +1,3 @@
-import Layout from "@/components/Layouts/Layout";
 import { useBlogByIdQuery, useUpdateBlogMutation } from "@/redux/api/blogApi";
 import { useTypesQuery } from "@/redux/api/typeApi";
 import { getUserInfo } from "@/services/auth.service";
@@ -7,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
@@ -287,7 +286,3 @@ function EditBlog() {
 }
 
 export default EditBlog;
-
-EditBlog.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

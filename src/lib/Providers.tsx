@@ -4,9 +4,9 @@ import { UserProvider } from "./UserProvider";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Provider store={store}>
-      <UserProvider>{children}</UserProvider>
-    </Provider>
+    <UserProvider>
+      <Provider store={store}>{children}</Provider>
+    </UserProvider>
   );
 };
 

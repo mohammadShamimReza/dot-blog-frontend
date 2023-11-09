@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-import Layout from "../../components/Layouts/Layout";
 import LoginForm from "./LoginForn";
 
 function Login() {
@@ -11,7 +9,3 @@ function Login() {
 }
 
 export default Login;
-
-Login.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

@@ -1,4 +1,3 @@
-import Layout from "@/components/Layouts/Layout";
 import { useBlogByIdQuery } from "@/redux/api/blogApi";
 import { useCreateReviewMutation } from "@/redux/api/reviewApi";
 import { getUserInfo } from "@/services/auth.service";
@@ -7,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactElement } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -140,7 +138,3 @@ function SingleBlog() {
 }
 
 export default SingleBlog;
-
-SingleBlog.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

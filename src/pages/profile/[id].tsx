@@ -5,13 +5,12 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import Layout from "../../components/Layouts/Layout";
 import MyBlogs from "./MyBlogs";
 
 const ProfileData = () => {
@@ -429,6 +428,3 @@ const ProfileData = () => {
 
 export default ProfileData;
 
-ProfileData.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};

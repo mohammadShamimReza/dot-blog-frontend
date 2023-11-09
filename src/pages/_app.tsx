@@ -1,17 +1,30 @@
+import RootLayout from "@/components/Layouts/RootLayout";
+import Providers from "@/lib/Providers";
 import "@/styles/globals.css";
-import type { NextPage } from "next";
+import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
-import type { ReactElement, ReactNode } from "react";
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
+import { useEffect, useState } from "react";
 
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
+export default function App({ Component, pageProps }: AppProps) {
+  const [showChild, setShowChild] = useState(false);
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((page) => page);
-
-  return getLayout(<Component {...pageProps} />);
+  if (!showChild) {
+    return null;
+  }
+  if (typeof window === "undefined") {
+    return <></>;
+  } else {
+    return (
+      <ThemeProvider attribute="class">
+        <Providers>
+          <RootLayout>
+            <Component {...pageProps} />
+          </RootLayout>
+        </Providers>
+      </ThemeProvider>
+    );
+  }
 }

@@ -40,7 +40,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     if (role && id) {
       setUser({ role, id });
     }
-  }, []);
+  }, [role, id]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
