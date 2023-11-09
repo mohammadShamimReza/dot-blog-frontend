@@ -44,7 +44,6 @@ function MyBlogs({ blog, id }: { blog: IBlog; id: string }) {
     try {
       const result = await deleteBlog(id);
 
-      console.log(result);
       if (result) {
         toast("Blog deleted successfully", {
           style: {
