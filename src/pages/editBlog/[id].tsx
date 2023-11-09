@@ -45,7 +45,7 @@ function EditBlog() {
   const [valueEditor, setValueEditor] = useState("");
   const [thumbImgUrl, setThumbImgUrl] = useState("");
 
-  const blogtypes = blogTypes;
+  const blogtypes = blogTypes?.data;
 
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const {

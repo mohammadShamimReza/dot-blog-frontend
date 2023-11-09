@@ -30,8 +30,6 @@ const ProfileData = () => {
 
   const [editProfileUrl, setEditProfileUrl] = useState(false);
 
-  console.log(userId);
-
   // console.log(UserProfileData);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -137,7 +135,11 @@ const ProfileData = () => {
       }
       handleRemoveImage();
     } catch (error) {
-      console.error(error);
+      toast.error("server error", {
+        style: {
+          border: "1px solid black",
+        },
+      });
     }
   };
   useEffect(() => {

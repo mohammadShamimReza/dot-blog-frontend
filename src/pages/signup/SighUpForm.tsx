@@ -73,7 +73,7 @@ const SignupForm: React.FC = () => {
     try {
       const result = await createUser({ ...data }).unwrap();
 
-      console.log(result);
+
 
       if (result?.data?.accessToken) {
         toast("Sign Up successfully", {
@@ -82,7 +82,7 @@ const SignupForm: React.FC = () => {
           },
         });
 
-        storeUserInfo({ accessToken: result?.accessToken });
+        storeUserInfo({ accessToken: result?.data?.accessToken });
         const { role, id } = getUserInfo() as any;
 
         setUser({ role: role, id: id });

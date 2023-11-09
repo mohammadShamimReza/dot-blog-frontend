@@ -22,6 +22,14 @@ interface FormInputs {
   thumbnailImg: File | null | string;
 }
 
+interface ErrorType {
+  response: {
+    statusCode: number;
+    message: string;
+    errorMessages: string;
+  };
+}
+
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   typeId: yup.string().required("type is required"),
@@ -38,7 +46,7 @@ function WriteForm() {
   const { data: blogTypes, error } = useTypesQuery({});
   const [createBlog, { data, isSuccess }] = useCreateBlogMutation();
   const { id } = getUserInfo() as any;
-  const blogtypes = blogTypes;
+  const blogtypes = blogTypes?.data;
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const router = useRouter();
   const [valueEditor, setValueEditor] = useState("");
@@ -84,12 +92,12 @@ function WriteForm() {
   };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-     toast.loading("Creating blog ...", {
-       style: {
-         border: "1px solid black",
-       },
-       duration: 3000,
-     });
+    toast.loading("Creating blog ...", {
+      style: {
+        border: "1px solid black",
+      },
+      duration: 3000,
+    });
     const formData = new FormData();
     if (selectedImage) {
       formData.append("file", selectedImage);
@@ -112,27 +120,33 @@ function WriteForm() {
     data.userId = id;
 
     try {
-      const buildBlog = await createBlog(data);
+      const buildBlog = await createBlog(data).unwrap();
 
-      buildBlog
-        ? toast("Blog created successfully", {
-            style: {
-              border: "1px solid black",
-            },
-          })
-        : toast("Blog not created successfully");
-      reset({ thumbnailImg: "", title: "", typeId: "" });
-      handleRemoveImage();
-
-      if ("data" in buildBlog) {
-        // Handle the success case
-        const blogId = buildBlog.data!.id;
-        router.push(`/blogs/${blogId}`);
+      const resultBuildBlog = buildBlog?.data;
+      if (buildBlog.status === 200) {
+        toast("Blog created successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
+        reset({ thumbnailImg: "", title: "", typeId: "" });
+        handleRemoveImage();
+        router.push(`/blogs/${resultBuildBlog?.id}`);
       } else {
-        console.error("An error occurred:", buildBlog.error);
+        toast.error("Blog id not successfully", {
+          style: {
+            border: "1px solid black",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      const specificError = error as ErrorType;
+      const logError = specificError?.response;
+      toast.error(logError.errorMessages, {
+        style: {
+          border: "1px solid black",
+        },
+      });
     }
   };
 

@@ -9,10 +9,9 @@ import { RxAvatar } from "react-icons/rx";
 function User() {
   const { user, setUser } = useUser();
   const { role, id } = getUserInfo() as any;
-  const { data: userData } = useUsersByIdQuery(id);
-  if (userData) {
-    const { profileImg, name, updatedAt } = userData;
-  }
+  const { data } = useUsersByIdQuery(id);
+  const userData = data?.data;
+
 
 
   const handleLogout = () => {

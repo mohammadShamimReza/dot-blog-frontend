@@ -18,7 +18,8 @@ const schema = yup.object().shape({
 function SingleBlog() {
   const router = useRouter();
   const id = router.query.id as string;
-  const { data: blogData } = useBlogByIdQuery(id);
+  const { data: blogDatas } = useBlogByIdQuery(id);
+  const blogData = blogDatas?.data;
   const { id: userId } = getUserInfo() as any;
   const [createReview, { data, status }] = useCreateReviewMutation();
 
