@@ -27,6 +27,8 @@ function SingleBlog() {
   const { errors } = formState;
 
   const onSubmit = async (data: any) => {
+    !data.userId ? alert("Please Login first!") : "";
+
     data.userId = userId;
     data.blogId = id;
 
@@ -41,10 +43,12 @@ function SingleBlog() {
     }
   };
 
+  console.log(blogData?.user);
+
   return (
     <div>
       <div className="flex justify-end align-middle">
-        <Link href={`/profile/${userId}`}>
+        <Link href={`/profile/${blogData?.user?.id}`}>
           <div className="">
             <Image
               src={blogData?.user?.profileImg || ""}
@@ -73,14 +77,15 @@ function SingleBlog() {
           {blogData?.title}
         </div>
         <br />
-        <div className="flex align-middle justify-center h-80 ">
+        <div className="flex align-middle justify-center h-60 ">
           <Image
             src={blogData?.thumbnailImg || ""}
             height={200}
             width={200}
+            // layout="responsive"
+            objectFit="cover"
             alt="Writer"
             className=" rounded-lg"
-            layout="responsive"
           />
         </div>
 
@@ -121,9 +126,6 @@ function SingleBlog() {
               />
             )}
           />
-          {errors.text && (
-            <p className="text-red-500 text-sm">{errors.text.message}</p>
-          )}
         </div>
 
         <button

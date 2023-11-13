@@ -211,6 +211,8 @@ function WriteForm() {
                 height={300}
                 width={300}
                 className=""
+                objectFit="cover"
+
                 // layout="responsive"
               />
             </div>

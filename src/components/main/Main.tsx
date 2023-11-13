@@ -1,6 +1,7 @@
 import { useBlogQuery } from "@/redux/api/blogApi";
 import { useTypesQuery } from "@/redux/api/typeApi";
 import { IBlog, IBlogType } from "@/types";
+import Link from "next/link";
 import { useState } from "react";
 import Blog from "./Blog";
 import Trendings from "./Trendings";
@@ -51,6 +52,18 @@ function Main() {
           <Trendings />
         </div>
       </div>
+      <br />
+      <br />
+      <div className=" flex justify-end align-middle">
+        <Link
+          href={"/blogs"}
+          className="text-center border p-5 rounded-xl text-gray-600 dark:text-white flex items-center gap-2   transition duration-300 transform hover:scale-110 cursor-pointer"
+        >
+          Read All blog
+        </Link>
+      </div>
+      <br />
+      <br />
     </div>
   );
 }

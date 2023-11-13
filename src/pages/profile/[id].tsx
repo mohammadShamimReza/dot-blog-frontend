@@ -166,28 +166,33 @@ const ProfileData = () => {
         <Toaster />
         {UserProfileData?.profileImg !== null && selectedImage === null && (
           <div className="rounded-lg border flex justify-center align-middle">
-            <div className="p-4 ">
-              <Image
-                src={UserProfileData?.profileImg}
-                alt="thumbnail image"
-                height={300}
-                width={300}
-                className=""
-                // layout="responsive"
-              />
+            <div className="">
+              <div className="p-4  h-60 w-60">
+                <Image
+                  src={UserProfileData?.profileImg}
+                  alt="thumbnail image"
+                  height={200}
+                  width={100}
+                  // layout="responsive"
+                  objectFit="cover"
+                  className=""
+                  // layout="responsive"
+                />
+              </div>
             </div>
           </div>
         )}
         {selectedImage !== null && (
           <div className="rounded-lg border flex justify-center align-middle">
-            <div className="p-4 ">
+            <div className="p-4  w-60">
               <Image
                 src={URL.createObjectURL(selectedImage)}
                 alt="thumbnail image"
-                height={70}
-                width={70}
+                height={200}
+                width={100}
                 className=""
-                layout="responsive"
+                objectFit="cover"
+                // layout="responsive"
               />
             </div>
           </div>

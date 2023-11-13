@@ -6,9 +6,13 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function Blog({ blog }: { blog: IBlog }) {
-  const { data: userData } = useUsersByIdQuery(blog?.userId);
+  const { data: userDatas } = useUsersByIdQuery(blog?.userId);
 
-  const updatedAt = new Date(userData?.updatedAt);
+  const userData = userDatas?.data;
+  const updatedAt = new Date(userDatas?.data?.updatedAt);
+
+
+
 
   if (!blog) {
     return (

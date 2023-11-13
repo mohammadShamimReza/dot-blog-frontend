@@ -66,14 +66,17 @@ function MyBlogs({ blog, id }: { blog: IBlog; id: string }) {
         <div className="max-w-sm  overflow-hidden border rounded-lg">
           <div className="px-6 py-4 h-60 flex flex-col justify-between">
             <Link href={`/blogs/${blog?.id}`}>
-              <p className="font-bold text-xl mb-2">{blog?.title}</p>
-              {blog?.content && (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: blog.content.split(" ").slice(0, 10).join(" "),
-                  }}
-                />
-              )}
+              <div className="flex justify-between flex-col ">
+                <p className="font-bold text-xl mb-2">{blog?.title}</p>
+                <hr />
+                {blog?.content && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: blog.content.split(" ").slice(0, 10).join(" "),
+                    }}
+                  />
+                )}
+              </div>
             </Link>
             {id ? (
               <div className="flex gap-1">

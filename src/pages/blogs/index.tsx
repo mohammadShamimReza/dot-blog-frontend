@@ -45,6 +45,8 @@ function Blogs() {
   const blogData = blogDatas?.data;
   const { data: blogTypeDatas } = useTypesQuery({});
 
+  console.log(blogTypeDatas);
+
   const handleSearchTerm = (data: any) => {
     setSearchTerm(data.searchTerm);
   };
