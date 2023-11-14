@@ -388,33 +388,31 @@ const ProfileData = () => {
             )}
           </div>
           <div className="flex justify-end ">
-            {profileEditable ? (
-              id ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setProfileEditable(false)}
-                    type="submit"
-                    className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => setProfileEditable(false)}
-                    type="button"
-                    className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
-                  >
-                    Save
-                  </button>
-                </div>
-              ) : (
+            {profileEditable && id ? (
+              <div className="flex gap-2">
                 <button
-                  onClick={() => setProfileEditable(true)}
+                  onClick={() => setProfileEditable(false)}
+                  type="submit"
+                  className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => setProfileEditable(false)}
                   type="button"
                   className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
                 >
-                  Edit
+                  Save
                 </button>
-              )
+              </div>
+            ) : id ? (
+              <button
+                onClick={() => setProfileEditable(true)}
+                type="button"
+                className="py-2 px-6 bg-gray-300 border rounded-lg hover:bg-gray-400 hover:text-white dark:bg-gray-500 dark:hover-bg-slate-400 dark:text-blackr"
+              >
+                Edit
+              </button>
             ) : (
               ""
             )}
