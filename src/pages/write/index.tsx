@@ -108,7 +108,7 @@ function WriteForm() {
         "https://api.cloudinary.com/v1_1/dqwnzs85c/image/upload",
         formData
       );
-      setThumbImgUrl(response.data.secure_url);
+        data.thumbnailImg = response.data.secure_url;
     } catch (error) {
       console.error(error);
     }
