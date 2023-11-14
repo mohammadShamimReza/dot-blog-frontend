@@ -108,15 +108,18 @@ function WriteForm() {
         "https://api.cloudinary.com/v1_1/dqwnzs85c/image/upload",
         formData
       );
-      setThumbImgUrl(response.data.secure_url);
+      console.log(response.data.secure_url);
+      data.thumbnailImg = response.data.secure_url;
     } catch (error) {
       console.error(error);
     }
 
     // data.thumbnailImg = selectedImage;
 
-    data.thumbnailImg = thumbImgUrl;
+    // data.thumbnailImg = thumbImgUrl;
     data.userId = id;
+
+    console.log(data);
 
     try {
       const buildBlog = await createBlog(data).unwrap();
