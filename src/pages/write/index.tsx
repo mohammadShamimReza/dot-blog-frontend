@@ -115,7 +115,6 @@ function WriteForm() {
 
     // data.thumbnailImg = selectedImage;
 
-    data.thumbnailImg = thumbImgUrl;
     data.userId = id;
 
     try {
