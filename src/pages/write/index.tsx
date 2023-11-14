@@ -117,6 +117,8 @@ function WriteForm() {
 
     data.userId = id;
 
+    console.log(data);
+
     try {
       const buildBlog = await createBlog(data).unwrap();
 
