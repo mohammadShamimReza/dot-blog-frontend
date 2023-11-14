@@ -27,7 +27,7 @@ function SingleBlog() {
   const { errors } = formState;
 
   const onSubmit = async (data: any) => {
-    !data.userId ? alert("Please Login first!") : "";
+    !userId ? alert("Please Login first!") : "";
 
     data.userId = userId;
     data.blogId = id;
