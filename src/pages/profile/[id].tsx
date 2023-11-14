@@ -109,7 +109,6 @@ const ProfileData = () => {
         "https://api.cloudinary.com/v1_1/dqwnzs85c/image/upload",
         formData
       );
-      console.log(response.data.secure_url);
 
       try {
         const result = await updateUser({
@@ -149,7 +148,6 @@ const ProfileData = () => {
     }
   }, [editProfileUrl]);
 
-  console.log(UserProfileData);
 
   if (!UserProfileData) {
     return (

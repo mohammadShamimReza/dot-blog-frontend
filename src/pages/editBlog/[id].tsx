@@ -129,7 +129,6 @@ function EditBlog() {
 
     try {
       const buildBlog = await updateBlog({ id: id, body: data }).unwrap();
-      console.log(buildBlog);
 
       const resultBuildBlog = buildBlog?.data;
       if (buildBlog.status === 200) {

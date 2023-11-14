@@ -43,7 +43,6 @@ function SingleBlog() {
     }
   };
 
-  console.log(blogData?.user);
 
   return (
     <div>
