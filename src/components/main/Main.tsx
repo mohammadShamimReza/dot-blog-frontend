@@ -38,9 +38,9 @@ function Main() {
                 </div>
               </div>
             ))}
-            <div className="sm:block hidden">
+            {/* <div className="sm:block hidden">
               <Trendings />
-            </div>
+            </div> */}
           </div>
           <div className="w-full sm:w-4/5 ">
             {blogData?.data.map((blog: IBlog) => (
