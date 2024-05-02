@@ -43,7 +43,7 @@ function Blogs() {
     page: pageCount,
   });
   const blogData = blogDatas?.data;
-  const { data: blogTypeDatas } = useTypesQuery({});
+  const { data: blogTypeDatas, isLoading } = useTypesQuery({});
 
   console.log(blogTypeDatas);
 
@@ -59,7 +59,7 @@ function Blogs() {
     resolver: yupResolver(validationSchema),
   });
 
-  if (!blogTypeDatas) {
+  if (isLoading) {
     return (
       <div className="">
         <Skeleton />

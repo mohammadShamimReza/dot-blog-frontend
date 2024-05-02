@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 function SingleBlog() {
   const router = useRouter();
   const id = router.query.id as string;
-  const { data: blogDatas } = useBlogByIdQuery(id);
+  const { data: blogDatas, isLoading } = useBlogByIdQuery(id);
   const blogData = blogDatas?.data;
   const { id: userId } = getUserInfo() as any;
   const [createReview, { data, status }] = useCreateReviewMutation();
@@ -42,6 +42,15 @@ function SingleBlog() {
       console.error(err.message, "this is error message");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="">
+        <Skeleton />
+        <Skeleton count={5} />
+      </div>
+    );
+  }
 
 
   return (
