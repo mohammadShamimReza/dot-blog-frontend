@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import Skeleton from "react-loading-skeleton";
+
 
 const schema = yup.object().shape({
   text: yup.string().required("Review is required"),
