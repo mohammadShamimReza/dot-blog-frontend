@@ -37,13 +37,13 @@ function Blogs() {
   const [searchTerm, setSearchTerm] = useState<undefined | string>(undefined);
   const [pageCount, setPageCount] = useState<number>(1);
 
-  const { data: blogDatas } = useBlogQuery({
+  const { data: blogDatas, isLoading } = useBlogQuery({
     typeId: type,
     searchTerm: searchTerm,
     page: pageCount,
   });
   const blogData = blogDatas?.data;
-  const { data: blogTypeDatas, isLoading } = useTypesQuery({});
+  const { data: blogTypeDatas } = useTypesQuery({});
 
   console.log(blogTypeDatas);
 
