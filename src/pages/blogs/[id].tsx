@@ -111,7 +111,7 @@ function SingleBlog() {
       <div className="text-2xl text-center p-5">Reviews</div>
       <br />
 
-      <div className="text-base ">
+      <div className="text-base text-center">
         {blogData?.review.map((review: IReview, index: number) => (
           <div key={index} className=" p-4 my-4 border rounded-xl">
             {review.text}
