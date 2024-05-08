@@ -54,7 +54,7 @@ function Blog({ blog }: { blog: IBlog }) {
               Updated At <br /> {updatedAt.toLocaleString()}
             </div>
 
-            <Link href={`/profile/${userData?.id}`}>
+            {/* <Link href={`/profile/${userData?.id}`}>
               <div className="flex items-center">
                 <Image
                   src={userData?.profileImg ? userData?.profileImg : ""}
@@ -65,7 +65,7 @@ function Blog({ blog }: { blog: IBlog }) {
                 />
               </div>
               <span>{userData?.name}</span>
-            </Link>
+            </Link> */}
             {/* <button
               className="flex items-center 
               isDarkMode  dark:text-gray-300"
