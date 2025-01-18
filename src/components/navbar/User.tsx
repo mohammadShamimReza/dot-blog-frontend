@@ -27,10 +27,10 @@ function User() {
           <div className="flex items-center">
             <Image
               src={userData?.profileImg ? userData?.profileImg : ""}
-              height={2}
-              width={2}
-              alt="Writer"
-              className="flex w-8 h-8 rounded-full mr-2"
+              alt="avatar"
+              width="36"
+              height="36"
+              className="rounded-full"
             />
           </div>
         )}

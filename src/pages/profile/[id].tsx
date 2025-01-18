@@ -163,18 +163,14 @@ const ProfileData = () => {
       <div className="rounded-lg overflow-hidden max-w-2xl mx-auto dark:bg-gray-800 bg-white border">
         <Toaster />
         {UserProfileData?.profileImg !== null && selectedImage === null && (
-          <div className="rounded-lg border flex justify-center align-middle">
-            <div className="">
-              <div className="p-4  h-60 w-60">
+          <div className="rounded-lg   ">
+            <div className="left-4 -bottom-4 z-10 flex justify-center size-24 rounded-lg">
+              <div className="rounded-lg size-24 overflow-hidden">
                 <Image
-                  src={UserProfileData?.profileImg}
-                  alt="thumbnail image"
-                  height={200}
-                  width={100}
-                  // layout="responsive"
-                  objectFit="cover"
-                  className=""
-                  // layout="responsive"
+                  src={UserProfileData?.profileImg || ""}
+                  alt="avatar"
+                  width={120}
+                  height={120}
                 />
               </div>
             </div>

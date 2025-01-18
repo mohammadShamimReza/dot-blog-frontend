@@ -4,19 +4,10 @@ import { getUserInfo, storeUserInfo } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import * as yup from "yup";
-
-interface LoginFormProps {
-  onSubmit: (data: any) => void;
-}
-
-type LoinFormValue = {
-  email: string;
-  password: string;
-};
 
 interface ErrorType {
   response: {
@@ -30,6 +21,7 @@ const LoginForm: React.FC = () => {
   const { user, setUser } = useUser();
   const [userLogin] = useUserLoginMutation();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const validationSchema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
@@ -50,7 +42,6 @@ const LoginForm: React.FC = () => {
 
     try {
       const res = await userLogin({ ...data }).unwrap();
-
 
       if (res?.data?.accessToken) {
         toast("Log In successfully", {
@@ -88,10 +79,10 @@ const LoginForm: React.FC = () => {
       <Toaster />
       <div className="min-h-screen flex items-center justify-center">
         <div className="w-full max-w-md m-4 p-6 rounded-lg border">
-          <h1 className="text-2xl text-center mb-4 font-semibold ">Login</h1>
+          <h1 className="text-2xl text-center mb-4 font-semibold">Login</h1>
           <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
             <div>
-              <label className="block  text-sm font-bold mb-2" htmlFor="email">
+              <label className="block text-sm font-bold mb-2" htmlFor="email">
                 Email
               </label>
               <Controller
@@ -108,9 +99,9 @@ const LoginForm: React.FC = () => {
                 )}
               />
             </div>
-            <div>
+            <div className="relative">
               <label
-                className="block  text-sm font-bold mb-2"
+                className="block text-sm font-bold mb-2"
                 htmlFor="password"
               >
                 Password
@@ -122,17 +113,25 @@ const LoginForm: React.FC = () => {
                   <input
                     {...field}
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Your Password"
-                    className="w-full border p-2 rounded-md"
+                    className="w-full border p-2 rounded-md pr-10"
                   />
                 )}
               />
+              {/* Password Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-2 mt-6 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
             </div>
             <div>
               <button
                 type="submit"
-                className="bg-gray-300 dark:bg-gray-600  font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400"
+                className="bg-gray-300 dark:bg-gray-600 font-bold p-2 rounded-md w-full dark:hover:bg-slate-500 hover:bg-gray-400"
               >
                 Login
               </button>
@@ -140,12 +139,12 @@ const LoginForm: React.FC = () => {
           </form>
           <br />
           <br />
-          <div className="text-right pt-4 ">
-            <div className=" text-left">
-              Not SignUp yet ! Please{" "}
+          <div className="text-right pt-4">
+            <div className="text-left">
+              Not SignUp yet! Please{" "}
               <Link
                 href={"/signup"}
-                className=" font-bold p-2 rounded-md w-full hover:text-gray-500 hover:dark:text-gray-300 text-right underline"
+                className="font-bold p-2 rounded-md w-full hover:text-gray-500 hover:dark:text-gray-300 text-right underline"
               >
                 Sign Up
               </Link>
