@@ -28,9 +28,9 @@ function User() {
             <Image
               src={userData?.profileImg ? userData?.profileImg : ""}
               alt="avatar"
-              width="36"
-              height="36"
-              className="rounded-full"
+                      width="36"
+                      height="36"
+                      className="rounded-full"
             />
           </div>
         )}

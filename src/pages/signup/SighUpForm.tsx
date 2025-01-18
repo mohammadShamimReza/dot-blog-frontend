@@ -26,11 +26,13 @@ interface ErrorType {
 const SignupForm: React.FC = () => {
   const [createUser] = useCreateUserMutation();
   const router = useRouter();
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
 
+  // States for toggling password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
+  // Validation schema
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is required"),
     designation: yup.string().required("Designation is required"),
@@ -53,7 +55,6 @@ const SignupForm: React.FC = () => {
   });
 
   const handleSignup = async (data: any) => {
-    toast.loading("Signing up...", { style: { border: "1px solid black" } });
     delete data.terms;
     delete data.repassword;
 
@@ -140,6 +141,47 @@ const SignupForm: React.FC = () => {
               )}
             </div>
 
+            {/* Experience */}
+            <div>
+              <label className="block text-sm text-gray-600">
+                Work Experience
+              </label>
+              <Controller
+                name="experience"
+                control={control}
+                render={({ field }) => (
+                  <textarea
+                    {...field}
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.experience && (
+                <p className="text-red-500 text-xs">
+                  {errors.experience.message}
+                </p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm text-gray-600">Email</label>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="email"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
+              )}
+            </div>
+
             {/* Password */}
             <div className="relative">
               <label className="block text-sm text-gray-600">Password</label>
@@ -157,7 +199,7 @@ const SignupForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-2 mt-3 flex items-center text-gray-500"
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500"
               >
                 {showPassword ? "🙈" : "👁️"}
               </button>
@@ -187,7 +229,7 @@ const SignupForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowRePassword(!showRePassword)}
-                className="absolute inset-y-0 right-2 mt-3 flex items-center text-gray-500"
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500"
               >
                 {showRePassword ? "🙈" : "👁️"}
               </button>
@@ -195,6 +237,27 @@ const SignupForm: React.FC = () => {
                 <p className="text-red-500 text-xs">
                   {errors.repassword.message}
                 </p>
+              )}
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-sm text-gray-600">
+                Phone Number
+              </label>
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    className="w-full border p-2 rounded-md"
+                  />
+                )}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-xs">{errors.phone.message}</p>
               )}
             </div>
 
@@ -217,6 +280,7 @@ const SignupForm: React.FC = () => {
               )}
             </div>
 
+            {/* Submit Button */}
             <div>
               <button
                 type="submit"
