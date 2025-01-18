@@ -64,6 +64,23 @@ function Blogs() {
       <div className="">
         <Skeleton />
         <Skeleton count={5} />
+        <br />
+        <br />
+        <Skeleton />
+        <Skeleton count={5} />
+        <br />
+        <br />
+        <Skeleton />
+        <Skeleton count={5} />
+        <br />
+        <br />
+        <Skeleton />
+        <Skeleton count={5} />
+        <br />
+        <br />
+        <Skeleton />
+        <Skeleton count={5} />
+        <br />
       </div>
     );
   }

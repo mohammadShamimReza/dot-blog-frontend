@@ -39,7 +39,7 @@ function NavBar() {
     >
       <div className="flex items-center justify-between">
         <Link href="/">
-          <div className="p-2 text-2xl font-bold">Dot-Blog</div>
+          <div className="p-2 text-3xl font-bold">SH-Blog</div>
         </Link>
 
         <div className="flex items-center space-x-4">

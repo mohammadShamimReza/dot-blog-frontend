@@ -73,7 +73,7 @@ const SignupForm: React.FC = () => {
     try {
       const result = await createUser({ ...data }).unwrap();
 
-
+console.log(result, 'this is result');
 
       if (result?.data?.accessToken) {
         toast("Sign Up successfully", {

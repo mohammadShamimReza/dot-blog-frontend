@@ -5,16 +5,44 @@ import Link from "next/link";
 import { useState } from "react";
 import Blog from "./Blog";
 import Trendings from "./Trendings";
+import Skeleton from "react-loading-skeleton";
 
 function Main() {
   const [type, setType] = useState<undefined | string>(undefined);
   const [searchTerm, setSearchTerm] = useState<undefined | string>(undefined);
-  const { data: blogDatas } = useBlogQuery({
+  const { data: blogDatas, isLoading } = useBlogQuery({
     typeId: type,
     searchTerm: searchTerm,
   });
   const blogData = blogDatas?.data;
   const { data: blogTypeDatas } = useTypesQuery({});
+
+
+    if (isLoading) {
+      return (
+        <div className="">
+          <Skeleton />
+          <Skeleton count={5} />
+          <br />
+          <br />
+          <Skeleton />
+          <Skeleton count={5} />
+          <br />
+          <br />
+          <Skeleton />
+          <Skeleton count={5} />
+          <br />
+          <br />
+          <Skeleton />
+          <Skeleton count={5} />
+          <br />
+          <br />
+          <Skeleton />
+          <Skeleton count={5} />
+          <br />
+        </div>
+      );
+    }
 
   return (
     <div className="">
