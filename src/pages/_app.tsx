@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return <></>;
   } else {
     return (
-      <ThemeProvider attribute="class">
+      <ThemeProvider attribute="class" defaultTheme="light">
         <Providers>
           <RootLayout>
             <Component {...pageProps} />
